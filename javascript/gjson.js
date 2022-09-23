@@ -14,8 +14,8 @@ class gJSON {
     }
 
     /**
-     * Si el texto es parseable, retorna true, de lo contrario, false.
-     * @param text - Texto que será parseado.
+     * Método que verifica si un string es un JSON válido.
+     * @param text - Texto a verificar.
      * @returns un valor booleano.
      */
     static parseable(text) {
