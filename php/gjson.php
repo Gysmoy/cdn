@@ -43,20 +43,20 @@ class gJSON
      */
     static public function flatten(mixed $object, string $prev = ''): array
     {
-        $formatted = array();
+        $flattened = array();
         foreach ($object as $key => $value) {
             $type = gettype($value);
             if ($type == 'array') {
                 $prev_key = $prev ? "$prev.$key" : $key;
                 $object2 = gJSON::flatten($value, $prev_key);
                 foreach ($object2 as $key2 => $value2) {
-                    $formatted[$key2] = $value2;
+                    $flattened[$key2] = $value2;
                 }
             } else {
                 $prev_key = $prev ? "$prev." : '';
-                $formatted["$prev_key$key"] = $value;
+                $flattened["$prev_key$key"] = $value;
             }
         }
-        return $formatted;
+        return $flattened;
     }
 }

@@ -34,7 +34,7 @@ class gJSON {
      * @returns un objeto con las claves y valores del objeto original, pero con las claves aplanadas.
      */
     static flatten = (object, prev = '') => {
-        var formatted = {};
+        var flattened = {};
         for (let key in object) {
             var value = object[key];
             var type = typeof value;
@@ -45,15 +45,15 @@ class gJSON {
                 value == null
             ) {
                 var prev_key = prev ? `${prev}.` : '';
-                formatted[`${prev_key}${key}`] = value;
+                flattened[`${prev_key}${key}`] = value;
             } else {
                 var prev_key = prev ? `${prev}.${key}` : key;
                 var object2 = plainObject(value, prev_key);
                 for (let key2 in object2) {
-                    formatted[key2] = object2[key2];
+                    flattened[key2] = object2[key2];
                 };
             }
         }
-        return formatted;
+        return flattened;
     }
 }
