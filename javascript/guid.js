@@ -9,7 +9,7 @@ class guid {
      * Función que genera un id corto
      * @returns una cadena de 8 caracteres.
      */
-    static short() {
+    static short = () => {
         var date = new Date().getTime();
         var uuid = 'xxxxxxxx'.replace(/[x]/g, function (c) {
             var r = (date + Math.random() * 16) % 16 | 0;
@@ -23,7 +23,7 @@ class guid {
      * Función que genera un id largo
      * @returns una cadena de 36 caracteres.
      */
-    static long() {
+    static long = () => {
         var date = new Date().getTime();
         var uuid = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'.replace(/[x]/g, function (c) {
             var r = (date + Math.random() * 16) % 16 | 0;
