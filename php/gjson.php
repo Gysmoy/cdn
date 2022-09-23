@@ -34,4 +34,29 @@ class gJSON
             return false;
         }
     }
+
+    /**
+     * Recibe un objeto y retorna un nuevo objeto con todas las claves aplanadas.
+     * @param object - El objeto que va a ser aplanado.
+     * @param [prev] - La clave previa.
+     * @return array un objeto con las claves y valores del objeto original, pero con las claves aplanadas.
+     */
+    static public function flatten(mixed $object, string $prev = ''): array
+    {
+        $formatted = array();
+        foreach ($object as $key => $value) {
+            $type = gettype($value);
+            if ($type == 'array') {
+                $prev_key = $prev ? "$prev.$key" : $key;
+                $object2 = gJSON::flatten($value, $prev_key);
+                foreach ($object2 as $key2 => $value2) {
+                    $formatted[$key2] = $value2;
+                }
+            } else {
+                $prev_key = $prev ? "$prev." : '';
+                $formatted["$prev_key$key"] = $value;
+            }
+        }
+        return $formatted;
+    }
 }
