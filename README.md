@@ -7,6 +7,7 @@
 - Yon Gerli Infante Arce [@gerli-arce](https://www.github.com/gerli-arce)
 - Ruth Najhely Gutierrez Castro [@najhgutcast](https://www.github.com/najhgutcast)
 
+
 ## ¿Qué puedo encontrar aquí?
 
 Puedes encontrar una lista de librerías útiles en la codificación, desde operaciones simples hasta las operaciones mas complejas.
@@ -18,7 +19,7 @@ Esta clase es útil para el manejo de arreglos asociativos.
 
 #### parse
 
-```http
+```
 static parse(text): object
 ```
 
@@ -28,7 +29,7 @@ static parse(text): object
 
 #### stringify
 
-```http
+```
 static stringify(object): string
 ```
 
@@ -38,7 +39,7 @@ static stringify(object): string
 
 #### parseable
 
-```http
+```
 static parseable(text): boolean
 ```
 
