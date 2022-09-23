@@ -23,7 +23,7 @@ class gJSON
     /**
      * Método que verifica si un string es un JSON válido.
      * @param text - Texto a verificar.
-     * @returns un valor booleano.
+     * @return bool - valor booleano.
      */
     static public function parseable(string $text): bool
     {
