@@ -1,3 +1,9 @@
+/**
+ * gJSON es una clase que contiene métodos estáticos que son contenedores
+ * para los métodos JSON.parse y JSON.stringify.
+ * 
+ * Propiedad de SoDe World
+ */
 class gJSON {
     static parse(text) {
         return JSON.parse(text);
@@ -7,18 +13,14 @@ class gJSON {
         return JSON.stringify(object);
     }
 
-    static parseable(value) {
+    /**
+     * Si el texto es parseable, retorna true, de lo contrario, false.
+     * @param text - Texto que será parseado.
+     * @returns un valor booleano.
+     */
+    static parseable(text) {
         try {
-            JSON.parse(value);
-            return true;
-        } catch (error) {
-            return false;
-        }
-    }
-
-    static stringifyable(value) {
-        try {
-            JSON.stringify(value);
+            JSON.parse(text);
             return true;
         } catch (error) {
             return false;
