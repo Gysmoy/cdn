@@ -109,4 +109,17 @@ class gText {
         let clean = text.split(' ').filter(Boolean).join(' ');
         return clean;
     }
+
+    /**
+     * Si el texto es null o vacío, retorna true. De lo contrario, restorna false.
+     * @param text - Texto a verificar.
+     * @returns un booleano.
+     */
+    static nullOrEmpty(text) {
+        text = String(text);
+        if (text == 'null' || text.trim() == '') {
+            return true;
+        }
+        return false;
+    }
 }
