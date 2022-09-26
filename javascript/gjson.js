@@ -5,11 +5,11 @@
  * Propiedad de SoDe World
  */
 class gJSON {
-    static parse = (text) => {
+    static parse(text) {
         return JSON.parse(text);
     }
 
-    static stringify = (object) => {
+    static stringify(object) {
         return JSON.stringify(object);
     }
 
@@ -18,7 +18,7 @@ class gJSON {
      * @param text - Texto a verificar.
      * @returns un valor booleano.
      */
-    static parseable = (text) => {
+    static parseable(text) {
         try {
             JSON.parse(text);
             return true;
@@ -33,7 +33,7 @@ class gJSON {
      * @param [prev] - La clave previa.
      * @returns un objeto con las claves y valores del objeto original, pero con las claves aplanadas.
      */
-    static flatten = (object, prev = '') => {
+    static flatten(object, prev = '') {
         var flattened = {};
         for (let key in object) {
             var value = object[key];

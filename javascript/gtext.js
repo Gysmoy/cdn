@@ -15,7 +15,7 @@ class gText {
      *        considerados en la comparación.
      * @returns un objeto con las propiedades de la comparación.
      */
-    static compare = (text1, text2, minwords = 3) => {
+    static compare(text1, text2, minwords = 3) {
         let start = new Date().getTime();
 
         text1 = this.clean(text1);
@@ -84,7 +84,7 @@ class gText {
      * @param text - Texto que se va a limpiar.
      * @returns un texto limpio de caracteres no alfanuméricos y acentos.
      */
-    static clean = (text) => {
+    static clean(text) {
         let especial_chars = [
             "Ã", "À", "Á", "Ä", "Â",
             "Ẽ", "È", "É", "Ë", "Ê",
