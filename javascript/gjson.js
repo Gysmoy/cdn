@@ -48,7 +48,7 @@ class gJSON {
                 flattened[`${prev_key}${key}`] = value;
             } else {
                 var prev_key = prev ? `${prev}.${key}` : key;
-                var object2 = plainObject(value, prev_key);
+                var object2 = this.flatten(value, prev_key);
                 for (let key2 in object2) {
                     flattened[key2] = object2[key2];
                 };
