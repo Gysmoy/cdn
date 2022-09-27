@@ -66,6 +66,13 @@ class gJSON {
     let restored = {};
     for (let i in object) {
       let key = i;
+
+      if (parseInt(key)) {
+        restored = [];
+      } else {
+        restored = {};
+      }
+
       let keys = key.split('.');
       let value = object[i];
       if (keys.length > 1) {
