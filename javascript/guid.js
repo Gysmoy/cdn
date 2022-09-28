@@ -33,7 +33,17 @@ class guid {
         return uuid;
     }
 
+    /**
+     * Recibe un string de caracteres 'x' y los reemplaza por un caracter
+     * hexadecimal random.
+     * @param any - Parámetro que recibe la función. Puede ser number o string.
+     * @returns Una cadena de caracteres aleatorios.
+     */
     static any(any) {
+        let format = any;
+        if (typeof any == 'number') {
+            format = 'x'.repeat(any);
+        }
         var date = new Date().getTime();
         var uuid = format.replace(/[x]/g, function (c) {
             var r = (date + Math.random() * 16) % 16 | 0;
