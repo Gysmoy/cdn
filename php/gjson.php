@@ -16,7 +16,7 @@ class gJSON
 
     static public function stringify(mixed $object): string
     {
-        $string = json_encode($object);
+        $string = json_encode($object, JSON_PRETTY_PRINT);
         return $string;
     }
 
@@ -58,5 +58,22 @@ class gJSON
             }
         }
         return $flattened;
+    }
+
+    static public function restore($object) {
+        $restored = array();
+        foreach ($object as $key => $value) {
+            $keys = explode('.', $key);
+            if (count($keys) > 1) {
+                $key = array_shift($keys);
+                $newkey = implode('.', $keys);
+                $kv = $restored[$key] ?? array();
+                $kv[$newkey] = $value;
+                $restored[$key] = gJSON::restore($kv);
+            } else {
+                $restored[$key] = $value;
+            }
+        }
+        return $restored;
     }
 }
