@@ -6,25 +6,44 @@ class gNotify {
         e.style.display = 'grid';
         e.style.gap = '10px';
         e.style.padding = 0;
-        e.style.bottom = '20px';
-        e.style.left = '20px';
+        e.style.top = '20px';
+        e.style.right = '20px';
         e.style.spacing = '5px';
         e.style.height = 'max-content';
         e.style.zIndex = 999999;
         return e;
     }
-    static template(title, icon, body, timeout, clicked) {
+    static template(title, icon, body, type, timeout, clicked) {
+        let color = '247, 247, 247';
+        switch (type) {
+            case 'primary':
+                color = '113, 182, 249';
+                break;
+            case 'success':
+                color = '16, 196, 105';
+                break;
+            case 'info':
+                color = '53, 184, 224';
+                break;
+            case 'warning':
+                color = '249,200,81';
+                break;
+            case 'danger':
+                color = '255, 91, 91';
+                break;
+        }
         let a = document.createElement('a');
         a.style.fontFamily = 'Poppins,sans-serif';
         a.style.width = '320px';
         a.style.margin = 0;
         a.style.padding = 0;
-        a.style.backgroundColor = 'rgba(0, 166, 90, 1)';
+        a.style.backgroundColor = `rgba(${color}, .18)`;
         a.style.backdropFilter = 'blur(40px)';
+        a.style.border = `1px solid rgba(${color}, .12)`;
         a.style.borderRadius = '7.5px';
         a.style.display = 'block';
         a.style.userSelect = 'none';
-        a.style.color = '#ffffff';
+        a.style.color = `rgb(${color})`;
         a.style.cursor = 'pointer';
         a.style.transition = '0.25s';
 
@@ -79,7 +98,7 @@ class gNotify {
         span.style.display = 'block';
         span.style.fontSize = '14px';
         span.style.letterSpacing = 'normal !important';
-        span.style.color = 'rgba(255, 255, 255, 0.75)';
+        span.style.color = `rgba(${color}, .825)`;
         span.style.textOverflow = 'none';
         span.style.wordWrap = 'break-word';
         span.innerText = body;
@@ -113,6 +132,7 @@ class gNotify {
         title = 'Notificación de gNotify',
         icon = 'https://sode.me/assets/logos/sode.svg',
         body = 'Propiedad de SoDe World',
+        type = 'success',
         timeout = 8000,
         clicked = () => { console.log('Has hecho clic sobre la notificación de SoDe') }
     } = {}) {
@@ -120,6 +140,6 @@ class gNotify {
             document.body.appendChild(this.container());
         }
         let div = document.getElementById('gNotify_container');
-        div.prepend(this.template(title, icon, body, timeout, clicked));
+        div.prepend(this.template(title, icon, body, type, timeout, clicked));
     }
 }

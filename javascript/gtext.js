@@ -84,7 +84,7 @@ class gText {
      * @param text - Texto que se va a limpiar.
      * @returns un texto limpio de caracteres no alfanuméricos y acentos.
      */
-    static clean(text) {
+    static clean(text, sep = ' ') {
         let especial_chars = [
             "Ã", "À", "Á", "Ä", "Â",
             "Ẽ", "È", "É", "Ë", "Ê",
@@ -106,7 +106,7 @@ class gText {
         for (let i = 0; i < especial_chars.length; i++) {
             text = text.replaceAll(especial_chars[i], normal_chars[i]);
         }
-        let clean = text.split(' ').filter(Boolean).join(' ');
+        let clean = text.split(' ').filter(Boolean).join(sep);
         return clean;
     }
 
