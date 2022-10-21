@@ -10,6 +10,11 @@
     </style>
 </head>
 <body>
-    <script src="javascript/gnotify.js"></script>
+    <button onclick="gClipboard.copy(this)" g-copy="texto a copiar">Copiar</button>
+    <textarea name="" id="container" cols="30" rows="3"></textarea>
+    <script src="javascript/gclipboard.js"></script>
+    <script>
+        gClipboard.paste('#container');
+    </script>
 </body>
 </html>
