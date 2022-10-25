@@ -15,9 +15,13 @@
     <script src="javascript/gclipboard.js"></script>
     <script>
         gClipboard.paste('#container', (files) => {
-            files.forEach(file => {
-                console.info(file);
-            });
+            if (files) {
+                files.forEach(file => {
+                    console.info(file);
+                });
+            }
+        }, {
+            style: 'border-radius: 10px; background: rgba(0, 0, 0, .125)'
         });
     </script>
 </body>

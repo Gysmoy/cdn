@@ -34,19 +34,23 @@ class gClipboard {
             fallback();
         }
     }
-    
+
     /**
-     * Agrega detectores de eventos al elemento que le pasa, y cuando pega o
-     * suelta archivos en ese elemento, llama a la función de devolución de
-     * llamada que le pasa y pasa los archivos que pegó o soltó a esa función
-     * de devolución de llamada
-     * @param pseudo - El elemento al que adjuntar el evento. Puede ser una
-     * cadena o un elemento.
+     * Le permite pegar archivos en un elemento de entrada
+     * @param pseudo - El elemento que desea pegar.
      * @param [callback] - La función que se llamará cuando se suelte o pegue
      * un archivo.
+     * @param [attrs] - Los atributos que se agregarán al elemento cuando el 
+     * usuario arrastre un archivo sobre el elemento.
+     * @returns Nothing.
      */
-    static paste(pseudo, callback = () => { }) {
+    static paste(pseudo, callback = () => { }, attrs = {}) {
         let element = typeof pseudo == 'string' ? document.querySelector(pseudo) : pseudo;
+        let default_attrs = {};
+        for (let key in attrs) {
+            let value = element.getAttribute(key);
+            default_attrs[key] = value;
+        }
         element.addEventListener('paste', function (event) {
             let files = event.clipboardData.files;
             if (files.length) {
@@ -62,14 +66,19 @@ class gClipboard {
         })
         element.addEventListener('drop', function (event) {
             event.preventDefault();
+            leave();
+            let value = element.value;
+            element.value = value + event.dataTransfer.getData('text');
             if (event.dataTransfer.items) {
                 var items = [...event.dataTransfer.items];
                 if (items.length == 0) {
                     callback(null);
+                    return;
                 }
                 items = items.filter(item => item.kind === 'file');
                 if (items.length == 0) {
                     callback(null);
+                    return;
                 }
                 callback(items.map(item => item.getAsFile()));
             } else {
@@ -78,6 +87,29 @@ class gClipboard {
         })
         element.addEventListener('dragover', function (event) {
             event.preventDefault();
+            over();
         })
+        element.addEventListener('dragleave', function (event) {
+            event.preventDefault();
+            leave();
+        })
+        function over(){
+            for (let i in attrs) {
+                try {
+                    element.setAttribute(i, attrs[i]);
+                } catch (error) {
+                    console.warn(error);
+                }
+            }
+        }
+        function leave(){
+            for (let i in default_attrs) {
+                try {
+                    element.setAttribute(i, default_attrs[i]);
+                } catch (error) {
+                    console.warn(error);
+                }
+            }
+        }
     }
 }
