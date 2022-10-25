@@ -14,7 +14,11 @@
     <textarea name="" id="container" cols="30" rows="3"></textarea>
     <script src="javascript/gclipboard.js"></script>
     <script>
-        gClipboard.paste('#container');
+        gClipboard.paste('#container', (files) => {
+            files.forEach(file => {
+                console.info(file);
+            });
+        });
     </script>
 </body>
 </html>
