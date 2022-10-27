@@ -73,7 +73,12 @@ class gImage {
         return blob;
     }
 
-    static async blobToBase64(blob) {
+    /**
+     * Toma un blob y devuelve una promesa que se resuelve en una cadena base64
+     * @param blob - El blob para convertir a base64
+     * @returns Una promesa que se resuelve en una cadena base64.
+     */
+    static blobToBase64 = async (blob) => {
         return new Promise((resolve, _) => {
             const reader = new FileReader();
             reader.onloadend = () => resolve(reader.result);
@@ -82,10 +87,18 @@ class gImage {
 
     }
 
+    /**
+     * Toma un blob, crea una imagen a partir de él, crea dos lienzos a partir de
+     * la imagen y devuelve los datos codificados en base64 de los lienzos.
+     * 
+     * La función se llama así:
+     * @returns { ok, image_type, image_full, image_mini }
+     */
     static async compress({
         blob,
         full_length = 1000,
-        mini_length = 100
+        mini_length = 100,
+        callback = () => {}
     }) {
         let ok = true;
         let image_type = blob.type;
@@ -100,7 +113,7 @@ class gImage {
             image.style.objectFit = 'cover';
             image.style.objectPosition = 'center center';
             await image.onload;
-            
+
             let canvas_full = document.createElement('canvas');
             canvas_full.width = full_length;
             canvas_full.height = full_length;
@@ -124,6 +137,7 @@ class gImage {
             console.error(error);
             ok = false;
         } finally {
+            callback({ ok, image_type, image_full, image_mini });
             return { ok, image_type, image_full, image_mini };
         }
     }
