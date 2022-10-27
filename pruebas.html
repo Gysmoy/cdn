@@ -22,7 +22,7 @@
             <div class="col-md-12"></div>
             <button class="btn btn-success col-md-4" onclick="gClipboard.copy(this)"
                 g-copy="texto a copiar">Copiar</button>
-            <textarea class="form-control col-md-6 mt-2" name="" id="container" cols="30" rows="3"></textarea>
+            <textarea class="form-control col-md-6 mt-2" placeholder="Pegue o arrastre una imagen" id="container" cols="30" rows="3"></textarea>
         </div>
 
         <!-- <h2 class="h2 mt-3">Comprimir imagen</h2>
@@ -46,17 +46,17 @@
 
 
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></script>
-    <script src="javascript/gclipboard.js"></script>
-    <script src="javascript/gimage.js"></script>
-    <script src="main.js"></script>
-    <script>
-        gClipboard.paste('#container', async (files) => {
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="javascript/gclipboard.js"></script>
+    <script type="text/javascript" src="javascript/gimage.js"></script>
+    <script type="text/javascript">
+        gClipboard.paste('#container', (files) => {
             if (files) {
                 gImage.compress({
                     blob: files[0],
-                    callback: ({ok, image_type, image_full, image_mini}) => {
+                    callback: ({ ok, image_type, image_full, image_mini }) => {
                         console.log(image_mini);
                     }
                 });
