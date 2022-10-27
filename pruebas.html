@@ -25,21 +25,7 @@
             <textarea class="form-control col-md-6 mt-2" placeholder="Pegue o arrastre una imagen" id="container" cols="30" rows="3"></textarea>
         </div>
 
-        <!-- <h2 class="h2 mt-3">Comprimir imagen</h2>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <input class="form-control" type="file" id="file">
-                </div>
-                <button id="btn_recortar" class="btn btn-success col-md-4 mt-2">Recortar</button>
-                <button id="descargar" class="btn btn-primary col-md-4 mt-2">descargar</button>
-
-                <div class="mt-3 card" id="image_cut">
-                    <img src="" alt="" id="previzualize_image">
-                </div>
-            </div>
-
-        </div> -->
+        <iframe id="iframe" src="" frameborder="0"></iframe>
     </div>
 
 
@@ -57,7 +43,7 @@
                 gImage.compress({
                     blob: files[0],
                     callback: ({ ok, image_type, image_full, image_mini }) => {
-                        console.log(image_mini);
+                        iframe.src = `data:${image_type};base64,${image_full}`;
                     }
                 });
 
