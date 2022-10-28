@@ -1,3 +1,10 @@
+/**
+ * gTrace es una clase que sirve para manejar datos de trazabilididad permitiendo 
+ * modificar cada uno de los elementos de una fecha.
+ * 
+ * @Author SoDe World.
+ * @Copyright Todos los derechos reservados.
+ */
 class gTrace {
 
     /* Variables privadas. */
