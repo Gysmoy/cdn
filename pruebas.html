@@ -25,7 +25,8 @@
             <textarea class="form-control col-md-6 mt-2" placeholder="Pegue o arrastre una imagen" id="container" cols="30" rows="3"></textarea>
         </div>
 
-        <iframe id="iframe" src="" frameborder="0"></iframe>
+        <img id="imgmini" src="" alt="">
+        <img id="imgfull" src="" alt="">
     </div>
 
 
@@ -42,8 +43,9 @@
             if (files) {
                 gImage.compress({
                     blob: files[0],
-                    callback: ({ ok, image_type, image_full, image_mini }) => {
-                        console.log(ok, image_type, image_full, image_mini)
+                    callback: (data) => {
+                        imgmini.src = `data:${data.image_type};base64,${data.image_mini}`;
+                        imgfull.src = `data:${data.image_type};base64,${data.image_full}`;
                     }
                 });
 
