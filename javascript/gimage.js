@@ -31,12 +31,12 @@ class gImage {
      * La función ejecuta un callback o retorna (con await):
      * @returns { ok, image_type, image_full, image_mini, image_real }
      */
-    static async compress({
+    static compress = async ({
         blob,
         full_length = 1000,
         mini_length = 100,
         callback = () => { }
-    }) {
+    }) => {
         let ok = true;
         let image_type = blob.type;
         let image_full = null;
