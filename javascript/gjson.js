@@ -81,5 +81,3 @@ class gJSON {
     return restored;
   }
 }
-
-console.log();
