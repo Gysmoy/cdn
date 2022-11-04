@@ -1,4 +1,13 @@
 class gStorage {
+    /**
+     * Le permite almacenar y recuperar cualquier tipo de datos en sessionStorage manteniendo
+     * la integridad de su valor, si es objeto, retorna un objeto, si es booleano retorna un
+     * booleano
+     * @param key - La clave del valor a almacenar.
+     * @param value [e7efa9b9-4e0f-0626-5419-6b627e28bbca] - El valor que se almacenará en
+     * la sesión.
+     * @returns El valor de la clave en el sessionStorage.
+     */
     static session(key, value = 'e7efa9b9-4e0f-0626-5419-6b627e28bbca') {
         if (value != 'e7efa9b9-4e0f-0626-5419-6b627e28bbca') {
             switch (typeof value) {
