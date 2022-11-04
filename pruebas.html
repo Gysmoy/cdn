@@ -46,6 +46,8 @@
         </div>
         
 
+        <img id="imgmini" src="" alt="">
+        <img id="imgfull" src="" alt="">
     </div>
 
 
@@ -62,8 +64,9 @@
             if (files) {
                 gImage.compress({
                     blob: files[0],
-                    callback: ({ ok, image_type, image_full, image_mini }) => {
-                        console.log(ok, image_type, image_full, image_mini)
+                    callback: (data) => {
+                        imgmini.src = `data:${data.image_type};base64,${data.image_mini}`;
+                        imgfull.src = `data:${data.image_type};base64,${data.image_full}`;
                     }
                 });
 
