@@ -35,6 +35,7 @@ class gImage {
         blob,
         full_length = 1000,
         mini_length = 100,
+        square = true,
         callback = () => { }
     }) => {
         let ok = true;
@@ -46,24 +47,37 @@ class gImage {
         try {
             let src = await this.blobToBase64(blob);
             let image = new Image();
-            // image.width = full_length;
-            // image.height = full_length;
             image.src = src;
-            image.style.objectFit = 'cover';
-            image.style.objectPosition = 'center center';
             await image.onload;
 
             let xcrop = 0;
             let ycrop = 0;
+            let original_width = full_length;
+            let original_height = full_length;
             let original_length = full_length;
 
-            if (image.width >= image.height) {
-                xcrop = (image.width - image.height) / 2;
-                original_length = image.height;
+            if (square) {
+                if (image.width >= image.height) {
+                    xcrop = (image.width - image.height) / 2;
+                    original_width = image.height;
+                    original_height = image.height;
+                } else {
+                    ycrop = (image.height - image.width) / 2;
+                    original_width = image.width;
+                    original_height = image.width;
+                }
             } else {
-                ycrop = (image.height - image.width) / 2;
-                original_length = image.width;
+                if (image.width >= image.height) {
+                    xcrop = (image.width - image.height) / 2;
+                    original_width = image.height;
+                    original_height = image.height;
+                } else {
+                    ycrop = (image.height - image.width) / 2;
+                    original_width = image.width;
+                    original_height = image.width;
+                }
             }
+
 
             let canvas_full = document.createElement('canvas');
             canvas_full.width = full_length;
