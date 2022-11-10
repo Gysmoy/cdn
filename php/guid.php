@@ -24,14 +24,11 @@ class guid
      */
     static public function long(): string
     {
-        $id = uniqid();
-        $uid = hash('md5', $id);
-
-        $c1 = substr($uid, 0, 8);
-        $c2 = substr($uid, 8, 4);
-        $c3 = substr($uid, 12, 4);
-        $c4 = substr($uid, 16, 4);
-        $c5 = substr($uid, 20);
+        $c1 = substr(hash('crc32', uniqid()), 0, 8);
+        $c2 = substr(hash('crc32', uniqid()), 0, 4);
+        $c3 = substr(hash('crc32', uniqid()), 0, 4);
+        $c4 = substr(hash('crc32', uniqid()), 0, 4);
+        $c5 = substr(hash('crc32', uniqid()), 0, 12);
 
         return "{$c1}-{$c2}-{$c3}-{$c4}-{$c5}";
     }
