@@ -41,35 +41,36 @@ class gJSON
      * @param [prev] - La clave previa.
      * @return array un objeto con las claves y valores del objeto original, pero con las claves aplanadas.
      */
-    static public function flatten(mixed $object, string $prev = ''): array
+    static public function flatten(mixed $object, $notation = '.', string $prev = ''): array
     {
         $flattened = array();
         foreach ($object as $key => $value) {
             $type = gettype($value);
             if ($type == 'array') {
-                $prev_key = $prev ? "$prev.$key" : $key;
-                $object2 = gJSON::flatten($value, $prev_key);
+                $prev_key = $prev ? $prev . $notation . $key : $key;
+                $object2 = gJSON::flatten($value, $notation, $prev_key);
                 foreach ($object2 as $key2 => $value2) {
                     $flattened[$key2] = $value2;
                 }
             } else {
-                $prev_key = $prev ? "$prev." : '';
+                $prev_key = $prev ? $prev . $notation : '';
                 $flattened["$prev_key$key"] = $value;
             }
         }
         return $flattened;
     }
 
-    static public function restore($object) {
+    static public function restore($object, $notation = '.')
+    {
         $restored = array();
         foreach ($object as $key => $value) {
-            $keys = explode('.', $key);
+            $keys = explode($notation, $key);
             if (count($keys) > 1) {
                 $key = array_shift($keys);
-                $newkey = implode('.', $keys);
+                $newkey = implode($notation, $keys);
                 $kv = $restored[$key] ?? array();
                 $kv[$newkey] = $value;
-                $restored[$key] = gJSON::restore($kv);
+                $restored[$key] = gJSON::restore($kv, $notation);
             } else {
                 $restored[$key] = $value;
             }
