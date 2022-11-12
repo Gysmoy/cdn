@@ -38,7 +38,7 @@ class gFetch
     }
     public function json(): array
     {
-        return json_decode($this->response);
+        return json_decode($this->response, true);
     }
     public function blob(): string
     {
@@ -49,3 +49,22 @@ class gFetch
         curl_close($this->curl);
     }
 }
+
+// $res = new gFetch('https://files.sode.me/api/files', [
+//     'method' => 'POST',
+//     'body' => [
+//         'type' => 'text/plain',
+//         'conent' => 'RXN0ZSBlcyB1biBhcmNoaXZvIGRlIHBydWViYSB4RA=='
+//     ],
+//     'headers' => [
+//         'Accept: application/json',
+//         'Content-Type: application/json',
+//         'SoDe-Auth-Token: ddedb807-8ff9-3c65-6887-c6b69efd28ea',
+//         'SoDe-Auth-Service: activity'
+//     ]
+// ]);
+
+// echo $res->ok;
+// echo $res->status;
+// echo $res->contentType;
+// print_r($res->json());
