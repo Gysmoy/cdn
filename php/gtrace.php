@@ -34,4 +34,11 @@ class gTrace
     {
         return date($format);
     }
+    static public function month(string $index = ''): string
+    {
+        if ($index != '') {
+            return gTrace::$mounths[intval($index)];
+        }
+        return gTrace::$mounths[date('n') - 1];
+    }
 }
