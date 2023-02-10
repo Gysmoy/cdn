@@ -13,9 +13,8 @@ class guid
      */
     static public function short(): string
     {
-        $id = uniqid();
-        $uid = hash('CRC32', $id);
-        return $uid;
+        $bytes = openssl_random_pseudo_bytes(4);
+        return bin2hex($bytes);
     }
 
     /**
@@ -24,11 +23,11 @@ class guid
      */
     static public function long(): string
     {
-        $c1 = substr(hash('crc32', uniqid()), 0, 8);
-        $c2 = substr(hash('crc32', uniqid()), 0, 4);
-        $c3 = substr(hash('crc32', uniqid()), 0, 4);
-        $c4 = substr(hash('crc32', uniqid()), 0, 4);
-        $c5 = substr(hash('crc32', uniqid()), 0, 12);
+        $c1 = bin2hex(openssl_random_pseudo_bytes(4));
+        $c2 = bin2hex(openssl_random_pseudo_bytes(2));
+        $c3 = bin2hex(openssl_random_pseudo_bytes(2));
+        $c4 = bin2hex(openssl_random_pseudo_bytes(2));
+        $c5 = bin2hex(openssl_random_pseudo_bytes(6));
 
         return "{$c1}-{$c2}-{$c3}-{$c4}-{$c5}";
     }

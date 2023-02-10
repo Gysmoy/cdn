@@ -53,5 +53,3 @@ class guid {
         return uuid;
     }
 }
-
-console.log(guid.long())

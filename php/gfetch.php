@@ -14,6 +14,10 @@ class gFetch
     ])
     {
         $this->curl = curl_init();
+        $headers = [];
+        foreach ($options['headers'] as $key => $value) {
+            $headers[] = "$key: $value";
+        }
         curl_setopt_array($this->curl, [
             CURLOPT_URL => $url,
             CURLOPT_RETURNTRANSFER => true,
@@ -23,7 +27,7 @@ class gFetch
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => $options['method'] ?? 'GET',
-            CURLOPT_POSTFIELDS => json_encode($options['body'] ?? [], JSON_PRETTY_PRINT),
+            CURLOPT_POSTFIELDS => $options['method'] != 'GET' ? json_encode($options['body'] ?? [], JSON_PRETTY_PRINT) : null,
             CURLOPT_HTTPHEADER => $options['headers'],
         ]);
         $this->response = curl_exec($this->curl);
@@ -50,21 +54,9 @@ class gFetch
     }
 }
 
-// $res = new gFetch('https://files.sode.me/api/files', [
-//     'method' => 'POST',
-//     'body' => [
-//         'type' => 'text/plain',
-//         'conent' => 'RXN0ZSBlcyB1biBhcmNoaXZvIGRlIHBydWViYSB4RA=='
-//     ],
-//     'headers' => [
-//         'Accept: application/json',
-//         'Content-Type: application/json',
-//         'SoDe-Auth-Token: ddedb807-8ff9-3c65-6887-c6b69efd28ea',
-//         'SoDe-Auth-Service: activity'
-//     ]
-// ]);
+$res = new gFetch('https://cotizador-rimac-service-prd-hpo6gn7esq-uc.a.run.app/rimac/cliente/DNI/72941485');
 
-// echo $res->ok;
-// echo $res->status;
-// echo $res->contentType;
-// print_r($res->json());
+echo $res->ok;
+echo $res->status;
+echo $res->contentType;
+print_r($res->text());

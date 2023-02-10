@@ -83,6 +83,8 @@ table td {
 </main>';
 
 echo base64_encode($html);
-header('Content-Type: text/plain')
+header('Content-Type: text/plain');
+
+echo uniqid('v4', true);
 
 ?>

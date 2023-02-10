@@ -8,6 +8,30 @@
  */
 class gJSON
 {
+
+    static private function recurse($obj, $current, &$result)
+    {
+        foreach ($obj as $key => $value) {
+            $newKey = $current . "." . $key;
+            if ($current == '') {
+                $newKey = $key;
+            }
+            if (is_array($value)) {
+                foreach ($value as $index => $item) {
+                    if (is_array($item) || is_object($item)) {
+                        gJSON::recurse($item, $newKey . "[$index]", $result);
+                    } else {
+                        $result[$newKey . "[$index]"] = $item;
+                    }
+                }
+            } elseif (is_object($value)) {
+                gJSON::recurse($value, $newKey, $result);
+            } else {
+                $result[$newKey] = $value;
+            }
+        }
+    }
+
     static public function parse(string $text): array
     {
         $array = json_decode($text, true);
@@ -27,12 +51,8 @@ class gJSON
      */
     static public function parseable(string $text): bool
     {
-        try {
-            gJSON::parse($text);
-            return true;
-        } catch (\Throwable $th) {
-            return false;
-        }
+        json_decode($text);
+        return (json_last_error() == JSON_ERROR_NONE);
     }
 
     /**
@@ -41,23 +61,11 @@ class gJSON
      * @param [prev] - La clave previa.
      * @return array un objeto con las claves y valores del objeto original, pero con las claves aplanadas.
      */
-    static public function flatten(mixed $object, $notation = '.', string $prev = ''): array
+    static public function flatten(mixed $obj): array
     {
-        $flattened = array();
-        foreach ($object as $key => $value) {
-            $type = gettype($value);
-            if ($type == 'array') {
-                $prev_key = $prev ? $prev . $notation . $key : $key;
-                $object2 = gJSON::flatten($value, $notation, $prev_key);
-                foreach ($object2 as $key2 => $value2) {
-                    $flattened[$key2] = $value2;
-                }
-            } else {
-                $prev_key = $prev ? $prev . $notation : '';
-                $flattened["$prev_key$key"] = $value;
-            }
-        }
-        return $flattened;
+        $result = array();
+        gJSON::recurse($obj, "", $result);
+        return $result;
     }
 
     static public function restore($object, $notation = '.')
