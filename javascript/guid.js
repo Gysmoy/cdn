@@ -53,3 +53,5 @@ class guid {
         return uuid;
     }
 }
+
+console.log(JSON);
