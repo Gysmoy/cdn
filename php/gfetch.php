@@ -27,7 +27,7 @@ class gFetch
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => $options['method'] ?? 'GET',
-            CURLOPT_POSTFIELDS => $options['method'] != 'GET' ? json_encode($options['body'] ?? [], JSON_PRETTY_PRINT) : null,
+            CURLOPT_POSTFIELDS => $options['method'] != 'GET' ? json_encode($options['body'] ?? []) : null,
             CURLOPT_HTTPHEADER => $options['headers'],
         ]);
         $this->response = curl_exec($this->curl);
@@ -54,9 +54,27 @@ class gFetch
     }
 }
 
-$res = new gFetch('https://cotizador-rimac-service-prd-hpo6gn7esq-uc.a.run.app/rimac/cliente/DNI/72941485');
+$res = new gFetch('http://localhost:8081/rimac/proxy', [
+    'method' => 'POST',
+    'body' => [
+        'url' => 'https://api.lolhuman.xyz/api/ytplay2?apikey=BrunoSobrino&query=avicii without you',
+        'options' => [
+            'method' => 'GET'
+        ]
+    ],
+    'headers' => [
+        'Content-Type: application/json',
+        'Accept: application/json'
+    ]
+]);
 
-echo $res->ok;
-echo $res->status;
-echo $res->contentType;
-print_r($res->text());
+$ok = $res->ok;
+$status =  $res->status;
+$contentType = $res->contentType;
+$json = $res->text();
+
+echo "status: {$ok}
+status: {$status}
+content-type: {$contentType}
+json: {$json}
+";

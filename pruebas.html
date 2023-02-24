@@ -6,62 +6,30 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            font-family: "Poppins", sans-serif;
-            box-sizing: border-box;
-        }
-
-        #process {
-            position: relative;
-            display: block;
-            height: 70px;
-            width: 70px;
-            border: 5px solid rgba(3, 141, 232, 0.25);
-            border-radius: 50%;
-            content: attr(value);
-        }
-
-        #process::before {
-            content: attr(value);
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            font-size: 24px;
-            color: rgb(3, 141, 232);
-            font-weight: bolder;
-            transform: translate(-50%, -50%);
-        }
-
-        #process::after {
-            content: '';
-            position: absolute;
-            display: block;
-            height: 60px;
-            width: 60px;
-            top: -5px;
-            left: -5px;
-            /* border: 5px solid rgb(3, 141, 232); */
-            border-radius: 50%;
-            border-image: radial-gradient(90deg,  #000 50%, #fff 50%);
-        }
-    </style>
+    <style></style>
 </head>
 
 <body>
-    <textarea id="textarea" cols="60" rows="10"></textarea>
-    <span id="process" max="12" value="2"></span>
-    <script type="text/javascript" src="javascript/gclipboard.min.js"></script>
-    <script type="text/javascript" src="javascript/gimage.min.js"></script>
+    <input type="text">
+    <select name="" id="micombo">
+        <option value="1">Opción 1</option>
+        <option value="2">Opción 2</option>
+        <option value="3">Opción 3</option>
+        <option value="4">Opción 4</option>
+    </select>
+    <input type="text">
+    
+    <script src="javascript/gelement.js"></script>
     <script>
-        gClipboard.paste(textarea, function (files) {
-            if (!files) return;
-            let file = files[0];
-            gImage.blobToBase64(file, (base64) => {
-                console.log(base64);
-            })
+        micombo.pretty({
+            select: {
+                width: 'max-content',
+                display: 'inline-block',
+                border: '1px solid grey',
+                borderRadius: '5px',
+                cursor: 'pointer',
+                padding: '5px 10px'
+            }
         });
     </script>
 </body>
