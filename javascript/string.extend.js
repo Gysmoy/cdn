@@ -2,8 +2,6 @@
  * Crea un objeto a partir de una cadena de texto que coincide con una expresión
  * regular y una estructura de propiedades.
  *
- * @function
- * @memberof String.prototype
  * @param {RegExp} regex - La expresión regular para buscar en la cadena de texto.
  * @param {string} structure - Una cadena de texto con la estructura de propiedades
  * del objeto separadas por comas.
@@ -29,8 +27,6 @@ String.prototype.matchAndCreateObject = function (regex, structure) {
  * Divide una cadena de texto en un arreglo y opcionalmente crea objetos a partir
  * de cada elemento utilizando una expresión regular y una estructura de propiedades.
  *
- * @function
- * @memberof String.prototype
  * @param {string} separator - El separador utilizado para dividir la cadena de
  * texto en un arreglo.
  * @param {object} [options] - Un objeto con opciones adicionales.
@@ -58,8 +54,6 @@ String.prototype.split2 = function (separator, { regex, structure } = {}) {
 /**
  * Convierte una cadena de texto en formato CSV en un arreglo de objetos JSON.
  *
- * @function
- * @memberof String.prototype
  * @param {string} [separator=','] - El separador utilizado para separar los campos
  * de la fila.
  * @param {number} [headers_pos=0] - La posición de la fila que contiene los
@@ -99,17 +93,12 @@ String.prototype.csvToJson = function (separator = ',', headers_pos = 0) {
 /**
  * Capitaliza la primera letra de cada palabra de una cadena y deja en mayúscula las
  * palabras que estén separadas por un punto.
- * @method toTitleCase
- * @memberof String.prototype
+ *
  * @param {Boolean} [capitalizeSingleWords=true] - Si es verdadero, las palabras con
  * una sola letra también se capitalizarán, de lo contrario, se mantendrán en minúsculas.
  * @returns {string} Cadena con la primera letra de cada palabra en mayúscula y el resto
  * en minúscula.
- * @example
- * var title = "software integration consulting a E.I.R.L";
- * var capitalizedTitle = title.toTitleCase();
- * console.log(capitalizedTitle); // "Software Integration Consulting a E.I.R.L"
-*/
+ */
 String.prototype.toTitleCase = function (capitalizeSingleWords = true) {
     let text = this.toString();
     let lastChar = text.slice(-1);
@@ -135,14 +124,9 @@ String.prototype.toTitleCase = function (capitalizeSingleWords = true) {
 
 /**
  * Convierte una cadena de texto en un objeto JSON si es posible.
- * @function
- * @name String.prototype.parseable
- * @returns {Object|false} Devuelve el objeto JSON si la cadena de texto es parseable como JSON, o devuelve false si no lo es.
- * @example
- * let jsonText = '{"name": "Juan", "age": 30}';
- * let parsedJson = jsonText.parseable(); // Devuelve un objeto JSON con las propiedades "name" y "age"
- * let invalidJsonText = 'no es un JSON';
- * let notParsed = invalidJsonText.parseable(); // Devuelve false
+ * 
+ * @returns {Object|false} Devuelve el objeto JSON si la cadena de texto es parseable
+ * como JSON, o devuelve false si no lo es.
  */
 String.prototype.parseable = function () {
     let text = this.toString();
@@ -153,3 +137,18 @@ String.prototype.parseable = function () {
         return false;
     }
 }
+
+/**
+ * Comprueba si la cadena de texto actual y la cadena de texto proporcionada se contienen
+ * mutuamente.
+ *
+ * @param {string} text - La cadena de texto a comprobar si se contiene mutuamente con la
+ * cadena de texto actual.
+ * @returns {boolean} Devuelve true si la cadena de texto actual y la cadena de texto
+ * proporcionada se contienen mutuamente, de lo contrario devuelve false.
+ */
+String.prototype.includesEachOther = function (text) {
+    let text1 = this.toString().toLowerCase();
+    let text2 = text.toLowerCase();
+    return text1.includes(text2) || text2.includes(text1);
+};
