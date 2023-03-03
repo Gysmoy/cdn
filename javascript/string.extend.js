@@ -132,3 +132,24 @@ String.prototype.toTitleCase = function (capitalizeSingleWords = true) {
     }
     return result.trim();
 }
+
+/**
+ * Convierte una cadena de texto en un objeto JSON si es posible.
+ * @function
+ * @name String.prototype.parseable
+ * @returns {Object|false} Devuelve el objeto JSON si la cadena de texto es parseable como JSON, o devuelve false si no lo es.
+ * @example
+ * let jsonText = '{"name": "Juan", "age": 30}';
+ * let parsedJson = jsonText.parseable(); // Devuelve un objeto JSON con las propiedades "name" y "age"
+ * let invalidJsonText = 'no es un JSON';
+ * let notParsed = invalidJsonText.parseable(); // Devuelve false
+ */
+String.prototype.parseable = function () {
+    let text = this.toString();
+    try {
+        let json = JSON.parse(text);
+        return json;
+    } catch (error) {
+        return false;
+    }
+}
