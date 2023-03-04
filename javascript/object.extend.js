@@ -26,3 +26,25 @@ Object.prototype.stringify = function (replacer = null, tab = null) {
 Object.prototype.pretty = function (tab = 2) {
     return JSON.stringify(this, null, tab);
 }
+
+Object.prototype.flatten = function (prefix) {
+    let obj = this;
+    return Object.keys(obj).reduce((acc, k) => {
+        const pre = prefix.length ? prefix + '.' : '';
+        if (Array.isArray(obj[k])) {
+            obj[k].forEach((item, i) => {
+                const key = `${pre}${k}[${i}]`;
+                if (typeof item === 'object' && item !== null) {
+                    Object.assign(acc, flatten(item, key));
+                } else {
+                    acc[key] = item;
+                }
+            });
+        } else if (typeof obj[k] === 'object' && obj[k] !== null) {
+            Object.assign(acc, flatten(obj[k], pre + k));
+        } else {
+            acc[pre + k] = obj[k];
+        }
+        return acc;
+    }, {});
+}
