@@ -10,6 +10,14 @@ Node.prototype.data = function (key, value = undefined) {
     return this[key];
 }
 
+Node.prototype.attr = function (key, value = undefined) {
+    if (value != undefined) {
+        this.setAttribute(key, value);
+        return;
+    }
+    return this.getAttribute(key);
+}
+
 HTMLInputElement.prototype.val = function () {
     return this.value;
 }
