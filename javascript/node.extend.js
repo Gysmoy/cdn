@@ -128,14 +128,10 @@ Node.prototype.toggle = function (delay = 0) {
     this.style.transition = `${delay / 1000}s`;
     if (style.visibility == 'hidden' || style.display == 'none') {
         this.style.display = 'block';
-        this.style.width = '360px';
-        this.style.height = '480px';
         this.style.visibility = 'unset';
         this.style.opacity = 1;
     } else {
         this.style.display = null;
-        this.style.width = '1px';
-        this.style.height = '1px';
         this.style.visibility = 'hidden';
         this.style.opacity = 0;
     }
