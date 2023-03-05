@@ -19,7 +19,8 @@ Node.prototype.text = function () {
  * lo contrario, no devuelve nada.
  */
 Node.prototype.prop = function (key, value = undefined) {
-    const nodeTypes = this['node-types'] || {};
+    const nodeTypes = this['node-types'] || '{}';
+    nodeTypes = JSON.parse(nodeTypes);
     if (value != undefined) {
         const type = typeof value;
         const stringifiedValue = (type === 'object' || type === 'function')
@@ -68,7 +69,8 @@ Node.prototype.prop = function (key, value = undefined) {
  * lo contrario, no devuelve nada.
  */
 Node.prototype.attr = function (key, value = undefined) {
-    const nodeTypes = this['node-types'] || {};
+    const nodeTypes = this['node-types'] || '{}';
+    nodeTypes = JSON.parse(nodeTypes);
     if (value != undefined) {
         const type = typeof value;
         const stringifiedValue = (type === 'object' || type === 'function')
@@ -83,7 +85,6 @@ Node.prototype.attr = function (key, value = undefined) {
         this['node-types'] = JSON.stringify(nodeTypes);
         return;
     } else {
-        console.log(nodeTypes);
         switch (nodeTypes[key]?.valueType) {
             case 'number':
                 return Number(this.getAttribute(key));
