@@ -21,3 +21,10 @@ Node.prototype.attr = function (key, value = undefined) {
 HTMLInputElement.prototype.val = function () {
     return this.value;
 }
+
+class HTML extends Node {
+    static create = (elementName) => {
+        let element = document.createElement(elementName);
+        return element;
+    }
+}
