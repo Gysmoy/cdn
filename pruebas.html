@@ -10,27 +10,37 @@
 </head>
 
 <body>
-    <input type="text">
-    <select name="" id="micombo">
-        <option value="1">Opción 1</option>
-        <option value="2">Opción 2</option>
-        <option value="3">Opción 3</option>
-        <option value="4">Opción 4</option>
-    </select>
-    <input type="text">
-    
-    <script src="javascript/gelement.js"></script>
+    <p>
+        <label for="text1">Texto original</label><br>
+        <textarea type="text" id="text1" rows="4">El sol está que brilla en el cielo azul y esta es muy hermosa</textarea>
+    </p>
+    <p>
+        <label for="text2">Texto comparación</label><br>
+        <textarea type="text" id="text2"
+            rows="5">El cielo tiene un color azul brillante y el sol está radiante en el firmamento</textarea>
+    </p>
+
+    <pre id="result"></pre>
+
+    <script src="./javascript/node.extend.js"></script>
+    <script src="./javascript/object.extend.js"></script>
+    <script src="./javascript/string.extend.js"></script>
+
     <script>
-        micombo.pretty({
-            select: {
-                width: 'max-content',
-                display: 'inline-block',
-                border: '1px solid grey',
-                borderRadius: '5px',
-                cursor: 'pointer',
-                padding: '5px 10px'
-            }
-        });
+        let resultContainer = HTML.take('#result');
+        let text1 = HTML.take('#text1');
+        let text2 = HTML.take('#text2');
+
+        comparetext();
+
+        function comparetext () {
+            let result = text1.val().compare(text2.val());
+            resultContainer.html(result.pretty());
+        }
+
+        text1.onkeyup = comparetext;
+        text2.onkeyup = comparetext;
+
     </script>
 </body>
 

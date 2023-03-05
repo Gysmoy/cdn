@@ -152,3 +152,96 @@ String.prototype.includesEachOther = function (text) {
     let text2 = text.toLowerCase();
     return text1.includes(text2) || text2.includes(text1);
 };
+
+String.prototype.clean = function (sep = ' ') {
+    let text = this.toString();
+
+    let especial_chars = [
+        "Ã", "À", "Á", "Ä", "Â",
+        "Ẽ", "È", "É", "Ë", "Ê",
+        "Ĩ", "Ì", "Í", "Ï", "Î",
+        "Õ", "Ò", "Ó", "Ö", "Ô",
+        "Ũ", "Ù", "Ú", "Ü", "Û",
+        "Ñ", "Ç"
+    ];
+    let normal_chars = [
+        "A", "A", "A", "A", "A",
+        "E", "E", "E", "E", "E",
+        "I", "I", "I", "I", "I",
+        "O", "O", "O", "O", "O",
+        "U", "U", "U", "U", "U",
+        "N", "C"
+    ];
+    text = text.toUpperCase();
+    text = text.replace(/[^A-Z0-9 ÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛÑÇ]/gi, '');
+    for (let i = 0; i < especial_chars.length; i++) {
+        text = text.replaceAll(especial_chars[i], normal_chars[i]);
+    }
+    let clean = text.split(' ').filter(Boolean).join(sep);
+    return clean;
+
+}
+
+String.prototype.compare = function (compareWith, chars = 3) {
+    let text1 = this.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    let text2 = compareWith.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+    let words1 = text1.split(/\W+/);
+    let words2 = text2.split(/\W+/);
+
+    let matches = [];
+    let raw1_array = this.toString().split(' ').filter(Boolean);
+    let raw2_array = compareWith.toString().split(' ').filter(Boolean);
+    let coincidences1_array = [];
+    let coincidences2_array = [];
+    for (let i = 0; i < words1.length; i++) {
+        for (let j = 0; j < words2.length; j++) {
+            let word1 = words1[i].replace(/[\u0300-\u036f]/g, "");
+            let word2 = words2[j].replace(/[\u0300-\u036f]/g, "");
+            if (word1 === word2) {
+                matches.push(word1);
+                coincidences1_array.push(word1);
+                coincidences2_array.push(word2);
+                break;
+            } else if (
+                (word1.length >= chars && word2.includes(word1)) ||
+                (word2.length >= chars && word1.includes(word2))
+            ) {
+                coincidences1_array.push(word1);
+                coincidences2_array.push(word2);
+            }
+        }
+    }
+
+    let similarity = matches.length / (words1.length + words2.length - matches.length);
+
+    return {
+        "in": {
+            "original": this.toString(),
+            "comparer": compareWith.toString()
+        },
+        "out": {
+            "original": raw1_array.map((str) => {
+                if (coincidences1_array.find(x => str.clean() == x.clean()))
+                    return `<strong>${str}</strong>`;
+                else
+                    return str;
+            }).join(' '),
+            "comparer": raw2_array.map((str) => {
+                if (coincidences2_array.find(x => str.clean() == x.clean()))
+                    return `<strong>${str}</strong>`;
+                else
+                    return str;
+            }).join(' ')
+        },
+        "accuracy": {
+            "atLeastOne": matches.length > 0,
+            "permissive": similarity > 0.25,
+            "moderate": similarity > 0.5,
+            "strict": similarity > 0.75,
+            "exact": similarity === 1
+        },
+        "coincidences": matches.length,
+        "percent": similarity
+    };
+};

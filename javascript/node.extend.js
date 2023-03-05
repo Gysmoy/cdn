@@ -3,10 +3,26 @@
  *
  * @returns {string} El texto dentro del nodo.
  */
-Node.prototype.text = function () {
-    return this.textContent();
+Node.prototype.text = function (text = undefined) {
+    if (text === undefined) {
+        return this.textContent();
+    } else {
+        this.innerText = text;
+    }
 }
 
+Node.prototype.val = function () {
+    return this.value;
+}
+
+Node.prototype.html = function (html = undefined) {
+    if (html === undefined) {
+        return this.innerHTML;
+    } else {
+        this.innerHTML = html;
+        return;
+    }
+}
 /**
  * Almacena o recupera el valor de una propiedad del nodo. Si se proporciona un valor,
  * la propiedad se establecerá en ese valor. Si no se proporciona un valor, se recuperará
