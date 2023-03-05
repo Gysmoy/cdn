@@ -123,6 +123,24 @@ Node.prototype.attr = function (key, value = undefined) {
     }
 }
 
+Node.prototype.toggle = function (delay = 0) {
+    let style = window.getComputedStyle(this);
+    this.style.transition = `${delay}s`;
+    if (style.visibility == 'hidden' || style.display == 'none') {
+        this.style.display = 'unset';
+        this.style.width = '360px';
+        this.style.height = '480px';
+        this.style.visibility = 'unset';
+        this.style.opacity = 1;
+    } else {
+        this.style.display = null;
+        this.style.width = '1px';
+        this.style.height = '1px';
+        this.style.visibility = 'hidden';
+        this.style.opacity = 0;
+    }
+}
+
 /**
  * Clase HTML para simplificar el manejo de elementos HTML
  */
