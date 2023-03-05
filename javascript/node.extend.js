@@ -23,6 +23,14 @@ HTMLInputElement.prototype.val = function () {
 }
 
 class HTML extends Node {
+    constructor(selector = null, all = false) {
+        if (selector)
+            if (all)
+                return document.querySelectorAll(selector);
+            else
+                return document.querySelector(selector);
+
+    }
     static create = (elementName) => {
         let element = document.createElement(elementName);
         return element;
