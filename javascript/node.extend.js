@@ -125,7 +125,7 @@ Node.prototype.attr = function (key, value = undefined) {
 
 Node.prototype.toggle = function (delay = 0) {
     let style = window.getComputedStyle(this);
-    this.style.transition = `${delay}s`;
+    this.style.transition = `${delay / 1000}s`;
     if (style.visibility == 'hidden' || style.display == 'none') {
         this.style.display = 'block';
         this.style.width = '360px';
