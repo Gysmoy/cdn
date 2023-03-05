@@ -23,8 +23,18 @@ Object.prototype.stringify = function (replacer = null, tab = null) {
  * @returns {string} - Una cadena que representa el objeto en formato JSON con
  * indentación aplicada.
  */
-Object.prototype.pretty = function (tab = 2) {
-    return JSON.stringify(this, null, tab);
+Object.prototype.pretty = function (tab = 2, {
+    keyNative = false,
+    valueNative = false,
+    asigner = ':',
+    separator = ','
+} = { asigner: ':', separator: ',' }) {
+    let str = JSON.stringify(this, null, tab);
+    if (keyNative) str = str.replace(/"([^"]+)":/g, '$1:');
+    if (valueNative) str = str.replace(/: "([^"]+)"/g, ': $1');
+    str = str.replace(/:/g, asigner);
+    str = str.replace(/,\n/g, `${separator}\n`)
+    return str;
 }
 
 /**
