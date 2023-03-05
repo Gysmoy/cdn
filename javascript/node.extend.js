@@ -127,7 +127,7 @@ Node.prototype.toggle = function (delay = 0) {
     let style = window.getComputedStyle(this);
     this.style.transition = `${delay}s`;
     if (style.visibility == 'hidden' || style.display == 'none') {
-        this.style.display = 'unset';
+        this.style.display = 'block';
         this.style.width = '360px';
         this.style.height = '480px';
         this.style.visibility = 'unset';
