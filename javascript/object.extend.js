@@ -33,21 +33,21 @@ Object.prototype.pretty = function (tab = 2) {
  * @param {string} [prefix=''] - El prefijo que se usará al concatenar las claves.
  * @returns {Object} - Un nuevo objeto con las claves concatenadas.
  */
-Object.prototype.flatten = function (prefix = '') {
+Object.prototype.flatten = function (notation = '.', prefix = '') {
     let obj = this;
     return Object.keys(obj).reduce((acc, k) => {
-        const pre = prefix.length ? prefix + '.' : '';
+        const pre = prefix.length ? prefix + notation : '';
         if (Array.isArray(obj[k])) {
             obj[k].forEach((item, i) => {
                 const key = `${pre}${k}[${i}]`;
                 if (typeof item === 'object' && item !== null) {
-                    Object.assign(acc, item.flatten(key));
+                    Object.assign(acc, item.flatten(notation, key));
                 } else {
                     acc[key] = item;
                 }
             });
         } else if (typeof obj[k] === 'object' && obj[k] !== null) {
-            Object.assign(acc, obj[k].flatten(pre + k));
+            Object.assign(acc, obj[k].flatten(notation, pre + k));
         } else {
             acc[pre + k] = obj[k];
         }
@@ -61,11 +61,11 @@ Object.prototype.flatten = function (prefix = '') {
  * @param {Object} obj - El objeto a convertir.
  * @returns {Object} - El objeto convertido.
  */
-Object.prototype.unflatten = function () {
+Object.prototype.unflatten = function (notation = '.') {
     let obj = this;
     let result = {};
     for (let key in obj) {
-        let keys = key.split('.');
+        let keys = key.split(notation);
         let cur = result;
         for (let i = 0; i < keys.length; i++) {
             let prop = keys[i];
