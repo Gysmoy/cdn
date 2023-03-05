@@ -20,12 +20,12 @@ Node.prototype.text = function () {
  */
 Node.prototype.prop = function (key, value = undefined) {
     if (value != undefined) {
+        const type = typeof value;
         const stringifiedValue = (type === 'object' || type === 'function')
             ? JSON.stringify(value)
             : value;
         this[key] = stringifiedValue;
 
-        const type = typeof value;
         const nodeTypes = this['node-types'] || {};
         nodeTypes[key] = {
             type: 'prop',
@@ -50,12 +50,12 @@ Node.prototype.prop = function (key, value = undefined) {
  */
 Node.prototype.attr = function (key, value = undefined) {
     if (value != undefined) {
+        const type = typeof value;
         const stringifiedValue = (type === 'object' || type === 'function')
             ? JSON.stringify(value)
             : value;
         this.setAttribute(key, stringifiedValue);
 
-        const type = typeof value;
         const nodeTypes = this['node-types'] || {};
         nodeTypes[key] = {
             type: 'attr',
