@@ -19,7 +19,7 @@ Node.prototype.text = function () {
  * lo contrario, no devuelve nada.
  */
 Node.prototype.prop = function (key, value = undefined) {
-    const nodeTypes = this['node-types'] || '{}';
+    let nodeTypes = this['node-types'] || '{}';
     nodeTypes = JSON.parse(nodeTypes);
     if (value != undefined) {
         const type = typeof value;
@@ -69,7 +69,7 @@ Node.prototype.prop = function (key, value = undefined) {
  * lo contrario, no devuelve nada.
  */
 Node.prototype.attr = function (key, value = undefined) {
-    const nodeTypes = this['node-types'] || '{}';
+    let nodeTypes = this['node-types'] || '{}';
     nodeTypes = JSON.parse(nodeTypes);
     if (value != undefined) {
         const type = typeof value;
