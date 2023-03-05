@@ -27,7 +27,13 @@ Object.prototype.pretty = function (tab = 2) {
     return JSON.stringify(this, null, tab);
 }
 
-Object.prototype.flatten = function (prefix) {
+/**
+ * Recursivamente aplana un objeto, concatenando las claves con el prefijo dado.
+ * 
+ * @param {string} [prefix=''] - El prefijo que se usará al concatenar las claves.
+ * @returns {Object} - Un nuevo objeto con las claves concatenadas.
+ */
+Object.prototype.flatten = function (prefix = '') {
     let obj = this;
     return Object.keys(obj).reduce((acc, k) => {
         const pre = prefix.length ? prefix + '.' : '';
@@ -35,16 +41,46 @@ Object.prototype.flatten = function (prefix) {
             obj[k].forEach((item, i) => {
                 const key = `${pre}${k}[${i}]`;
                 if (typeof item === 'object' && item !== null) {
-                    Object.assign(acc, flatten(item, key));
+                    Object.assign(acc, item.flatten(key));
                 } else {
                     acc[key] = item;
                 }
             });
         } else if (typeof obj[k] === 'object' && obj[k] !== null) {
-            Object.assign(acc, flatten(obj[k], pre + k));
+            Object.assign(acc, obj[k].flatten(pre + k));
         } else {
             acc[pre + k] = obj[k];
         }
         return acc;
     }, {});
-}
+};
+
+console.log(({
+    "glossary": {
+        "title": "example glossary",
+        'milista': [
+            1, 2, 3, 4, 5,
+            {
+                "hola": "mundo",
+                "hello": "world"
+            }
+        ],
+        "GlossDiv": {
+            "title": "S",
+            "GlossList": {
+                "GlossEntry": {
+                    "ID": "SGML",
+                    "SortAs": "SGML",
+                    "GlossTerm": "Standard Generalized Markup Language",
+                    "Acronym": "SGML",
+                    "Abbrev": "ISO 8879:1986",
+                    "GlossDef": {
+                        "para": "A meta-markup language, used to create markup languages such as DocBook.",
+                        "GlossSeeAlso": ["GML", "XML"]
+                    },
+                    "GlossSee": "markup"
+                }
+            }
+        }
+    }
+}).flatten());
