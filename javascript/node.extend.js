@@ -83,6 +83,7 @@ Node.prototype.attr = function (key, value = undefined) {
         this['node-types'] = JSON.stringify(nodeTypes);
         return;
     } else {
+        console.log(nodeTypes);
         switch (nodeTypes[key]?.valueType) {
             case 'number':
                 return Number(this.getAttribute(key));
