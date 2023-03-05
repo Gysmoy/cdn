@@ -19,6 +19,7 @@ Node.prototype.text = function () {
  * lo contrario, no devuelve nada.
  */
 Node.prototype.prop = function (key, value = undefined) {
+    const nodeTypes = this['node-types'] || {};
     if (value != undefined) {
         const type = typeof value;
         const stringifiedValue = (type === 'object' || type === 'function')
@@ -26,15 +27,33 @@ Node.prototype.prop = function (key, value = undefined) {
             : value;
         this[key] = stringifiedValue;
 
-        const nodeTypes = this['node-types'] || {};
         nodeTypes[key] = {
             type: 'prop',
             valueType: type
         };
         this['node-types'] = JSON.stringify(nodeTypes);
         return;
+    } else {
+        switch (nodeTypes[key]?.valueType) {
+            case 'number':
+                return Number(this[key]);
+            case 'string':
+                return String(this[key]);
+            case 'object':
+                return JSON.parse(this[key]);
+            case 'function':
+                const fn = new Function('', `return ${this[key]};`)();
+                return fn.call(this);
+            case 'null':
+                return null;
+            case 'boolean':
+                return this[key] == 'true';
+            case 'array':
+                return JSON.parse(this[key]);
+            default:
+                return this[key];
+        }
     }
-    return this[key];
 }
 
 /**
@@ -49,6 +68,7 @@ Node.prototype.prop = function (key, value = undefined) {
  * lo contrario, no devuelve nada.
  */
 Node.prototype.attr = function (key, value = undefined) {
+    const nodeTypes = this['node-types'] || {};
     if (value != undefined) {
         const type = typeof value;
         const stringifiedValue = (type === 'object' || type === 'function')
@@ -56,15 +76,33 @@ Node.prototype.attr = function (key, value = undefined) {
             : value;
         this.setAttribute(key, stringifiedValue);
 
-        const nodeTypes = this['node-types'] || {};
         nodeTypes[key] = {
             type: 'attr',
             valueType: type
         };
         this['node-types'] = JSON.stringify(nodeTypes);
         return;
+    } else {
+        switch (nodeTypes[key]?.valueType) {
+            case 'number':
+                return Number(this.getAttribute(key));
+            case 'string':
+                return String(this.getAttribute(key));
+            case 'object':
+                return JSON.parse(this.getAttribute(key));
+            case 'function':
+                const fn = new Function('', `return ${this.getAttribute(key)};`)();
+                return fn.call(this);
+            case 'null':
+                return null;
+            case 'boolean':
+                return this.getAttribute(key) == 'true';
+            case 'array':
+                return JSON.parse(this.getAttribute(key));
+            default:
+                return this.getAttribute(key);
+        }
     }
-    return this.getAttribute(key);
 }
 
 /**
