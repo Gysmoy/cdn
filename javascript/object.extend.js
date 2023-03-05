@@ -55,7 +55,49 @@ Object.prototype.flatten = function (prefix = '') {
     }, {});
 };
 
-console.log(({
+Object.prototype.unflatten = function () {
+    let obj = this;
+    let result = {};
+    for (let key in obj) {
+        let keys = key.split('.');
+        let cur = result;
+        for (let i = 0; i < keys.length; i++) {
+            let prop = keys[i];
+            let isArray = false;
+            if (prop.includes('[') && prop.endsWith(']')) {
+                let index = parseInt(prop.slice(prop.indexOf('[') + 1, prop.length - 1));
+                prop = prop.slice(0, prop.indexOf('['));
+                if (!cur[prop]) {
+                    cur[prop] = [];
+                }
+                isArray = true;
+                while (cur[prop].length < index) {
+                    cur[prop].push({});
+                }
+                if (i === keys.length - 1) {
+                    cur[prop][index] = obj[key];
+                } else {
+                    if (!cur[prop][index]) {
+                        cur[prop][index] = {};
+                    }
+                    cur = cur[prop][index];
+                }
+            } else {
+                if (i === keys.length - 1) {
+                    cur[prop] = obj[key];
+                } else {
+                    if (!cur[prop]) {
+                        cur[prop] = {};
+                    }
+                    cur = cur[prop];
+                }
+            }
+        }
+    }
+    return result;
+}
+
+let obj = {
     "glossary": {
         "title": "example glossary",
         'milista': [
@@ -83,4 +125,7 @@ console.log(({
             }
         }
     }
-}).flatten());
+};
+
+console.log(obj.flatten());
+console.log(obj.flatten().unflatten());
