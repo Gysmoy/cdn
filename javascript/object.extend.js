@@ -102,3 +102,16 @@ Object.prototype.unflatten = function () {
     }
     return result;
 }
+
+/**
+ * Toma una cantidad especificada de elementos desde el principio del array actual y
+ * devuelve un nuevo array con esos elementos.
+ *
+ * @param {number} quantity - La cantidad de elementos que se tomarán del array actual.
+ * Si se proporciona un valor negativo, se tomará ningún elemento.
+ * @returns {Array} Un nuevo array que contiene los elementos tomados desde el array
+ * actual.
+ */
+Array.prototype.take = function (quantity) {
+    return this.slice(0, quantity);
+}
