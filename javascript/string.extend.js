@@ -153,6 +153,16 @@ String.prototype.includesEachOther = function (text) {
     return text1.includes(text2) || text2.includes(text1);
 };
 
+/**
+ * Retorna una nueva cadena con los caracteres especiales y acentos reemplazados por sus
+ * versiones sin acentos, y eliminando los caracteres no alfanuméricos. Los espacios
+ * múltiples son reemplazados por un solo espacio.
+ * 
+ * @param {string} [sep=' '] - El separador que se usará para unir los elementos de la
+ * cadena resultante. Por defecto, es un espacio en blanco.
+ * @returns {string} Una nueva cadena sin caracteres especiales ni acentos, y sin caracteres
+ * no alfanuméricos, con los espacios múltiples reemplazados por un solo espacio.
+ */
 String.prototype.clean = function (sep = ' ') {
     let text = this.toString();
 
@@ -182,13 +192,12 @@ String.prototype.clean = function (sep = ' ') {
 
 }
 
-
 /**
- * Retorna una nueva cadena que contiene solo caracteres alfanuméricos de la cadena original,
- * separados por un solo espacio en blanco. Los caracteres no alfanuméricos y los dobles
- * espacios son eliminados.
- * @returns {string} Una nueva cadena con solo caracteres alfanuméricos separados por un
- * solo espacio en blanco.
+ * Retorna una cadena de texto con sólo caracteres alfanuméricos y espacios.
+ * 
+ * @param {boolean} [latin=true] - Indica si se deben incluir caracteres latinos
+ * extendidos (e.g. Ññ) o no.
+ * @returns {string} Cadena de texto con sólo caracteres alfanuméricos y espacios.
  */
 String.prototype.getAlNum = function (latin = true) {
     let regex = new RegExp('[^a-zA-Z0-9Ññ\\s]', 'g');
@@ -201,6 +210,13 @@ String.prototype.getAlNum = function (latin = true) {
         .join(' ');
 };
 
+/**
+ * Calcula la similitud entre dos cadenas de texto comparando sus palabras.
+ * 
+ * @param {string} compareWith - La cadena con la que comparar.
+ * @param {number} [chars=3] - El número mínimo de caracteres que una palabra debe tener para ser considerada en la comparación.
+ * @returns {object} Un objeto que contiene información sobre la comparación entre las dos cadenas.
+ */
 String.prototype.compare = function (compareWith, chars = 3) {
     let text1 = this.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     let text2 = compareWith.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
