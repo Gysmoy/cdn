@@ -14,14 +14,21 @@ Object.prototype.stringify = function (replacer = null, tab = null) {
 }
 
 /**
- * Convierte un objeto en formato JSON en una cadena, aplicando una indentación de
- * espacios para hacerla más legible.
+ * Una función que imprime de forma legible la representación JSON de un objeto con
+ * opciones adicionales de formato.
  *
- * @param {number} [tab = 2] - Espacio que se utiliza para indentar cada nivel del
- * objeto JSON. Si se proporciona un número, se usará ese número de espacios. Si no
- * se proporciona, se usará un valor predeterminado de 2 espacios.
- * @returns {string} - Una cadena que representa el objeto en formato JSON con
- * indentación aplicada.
+ * @param {number} [tab = 2] - El número de espacios para indentar la salida.
+ * @param {Object} [options] - Opciones adicionales para el formato de la salida.
+ * @param {boolean} [options.keyNative = false] - Indica si las comillas dobles alrededor
+ * de las claves de objeto deben eliminarse.
+ * @param {boolean} [options.valueNative = false] - Indica si las comillas dobles alrededor
+ * de los valores de cadena deben eliminarse.
+ * @param {string} [options.asigner = ':'] - El separador a utilizar entre las claves y
+ * los valores del objeto.
+ * @param {string} [options.separator = ','] - El separador a utilizar entre cada par
+ * clave-valor del objeto.
+ * @returns {string} - Una cadena que contiene la representación JSON del objeto formateado
+ * de manera legible.
  */
 Object.prototype.pretty = function (tab = 2, {
     keyNative = false,
