@@ -182,6 +182,22 @@ String.prototype.clean = function (sep = ' ') {
 
 }
 
+
+/**
+ * Retorna una nueva cadena que contiene solo caracteres alfanuméricos de la cadena original,
+ * separados por un solo espacio en blanco. Los caracteres no alfanuméricos y los dobles
+ * espacios son eliminados.
+ * @returns {string} Una nueva cadena con solo caracteres alfanuméricos separados por un
+ * solo espacio en blanco.
+ */
+String.prototype.getAlNum = function () {
+    return this.toString()
+        .replace(/[^a-zA-Z0-9\s]/g, '') // Eliminar caracteres no alfanuméricos
+        .split(' ') // Dividir la cadena en un array usando el espacio en blanco como separador
+        .filter(Boolean) // Eliminar elementos vacíos del array
+        .join(' '); // Unir los elementos del array en una sola cadena separados por un espacio en blanco
+};
+
 String.prototype.compare = function (compareWith, chars = 3) {
     let text1 = this.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     let text2 = compareWith.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
