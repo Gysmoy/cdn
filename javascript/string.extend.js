@@ -190,12 +190,15 @@ String.prototype.clean = function (sep = ' ') {
  * @returns {string} Una nueva cadena con solo caracteres alfanuméricos separados por un
  * solo espacio en blanco.
  */
-String.prototype.getAlNum = function () {
+String.prototype.getAlNum = function (latin = true) {
+    let regex = new RegExp('[^a-zA-Z0-9Ññ\\s]', 'g');
+    if (!latin) regex = new RegExp('[^a-zA-Z0-9\\s]', 'g');
+
     return this.toString()
-        .replace(/[^a-zA-Z0-9\s]/g, '') // Eliminar caracteres no alfanuméricos
-        .split(' ') // Dividir la cadena en un array usando el espacio en blanco como separador
-        .filter(Boolean) // Eliminar elementos vacíos del array
-        .join(' '); // Unir los elementos del array en una sola cadena separados por un espacio en blanco
+        .replace(regex, '')
+        .split(' ')
+        .filter(Boolean)
+        .join(' ');
 };
 
 String.prototype.compare = function (compareWith, chars = 3) {
