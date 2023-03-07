@@ -211,11 +211,27 @@ String.prototype.getAlNum = function (latin = true) {
 };
 
 /**
+ * Elimina todos los caracteres de una cadena de texto excepto aquellos especificados.
+ * @param {string} characters - Los caracteres que se quieren mantener en la cadena de texto.
+ * @returns {string} La cadena de texto con solo los caracteres especificados.
+ */
+String.prototype.keep = function (characters) {
+    const regex = new RegExp(`[^${characters}]`, 'g');
+    return this.toString()
+        .replace(regex, '')
+        .split(' ')
+        .filter(Boolean)
+        .join(' ');
+};
+
+/**
  * Calcula la similitud entre dos cadenas de texto comparando sus palabras.
  * 
  * @param {string} compareWith - La cadena con la que comparar.
- * @param {number} [chars=3] - El número mínimo de caracteres que una palabra debe tener para ser considerada en la comparación.
- * @returns {object} Un objeto que contiene información sobre la comparación entre las dos cadenas.
+ * @param {number} [chars=3] - El número mínimo de caracteres que una palabra debe tener
+ * para ser considerada en la comparación.
+ * @returns {object} Un objeto que contiene información sobre la comparación entre las
+ * dos cadenas.
  */
 String.prototype.compare = function (compareWith, chars = 3) {
     let text1 = this.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
