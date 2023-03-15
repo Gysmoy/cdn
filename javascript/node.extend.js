@@ -23,6 +23,15 @@ Node.prototype.html = function (html = undefined) {
         return;
     }
 }
+
+Node.prototype.trigger = function (event) {
+    const e = new Event(event);
+    this.dispatchEvent(e);
+}
+
+Node.prototype.listen = function (event, callback = () => {}) {
+    this.addEventListener(event, callback);
+}
 /**
  * Almacena o recupera el valor de una propiedad del nodo. Si se proporciona un valor,
  * la propiedad se establecerá en ese valor. Si no se proporciona un valor, se recuperará
