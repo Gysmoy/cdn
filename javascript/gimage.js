@@ -21,7 +21,6 @@ class gImage {
             };
             reader.readAsDataURL(blob);
         });
-
     }
 
     /**
@@ -52,32 +51,16 @@ class gImage {
 
             let xcrop = 0;
             let ycrop = 0;
-            let original_width = full_length;
-            let original_height = full_length;
-            let original_length = full_length;
+            let original_width = image.width;
+            let original_height = image.height;
+            let original_length = Math.min(original_width, original_height);
 
             if (square) {
-                if (image.width >= image.height) {
-                    xcrop = (image.width - image.height) / 2;
-                    original_width = image.height;
-                    original_height = image.height;
-                } else {
-                    ycrop = (image.height - image.width) / 2;
-                    original_width = image.width;
-                    original_height = image.width;
-                }
-            } else {
-                if (image.width >= image.height) {
-                    xcrop = (image.width - image.height) / 2;
-                    original_width = image.height;
-                    original_height = image.height;
-                } else {
-                    ycrop = (image.height - image.width) / 2;
-                    original_width = image.width;
-                    original_height = image.width;
-                }
+                xcrop = (original_width - original_length) / 2;
+                ycrop = (original_height - original_length) / 2;
+                original_width = original_length;
+                original_height = original_length;
             }
-
 
             let canvas_full = document.createElement('canvas');
             canvas_full.width = full_length;
@@ -89,7 +72,7 @@ class gImage {
             ctx_full.drawImage(
                 image,
                 xcrop, ycrop,
-                original_length, original_length,
+                original_width, original_height,
                 0, 0,
                 full_length, full_length
             );
@@ -104,7 +87,7 @@ class gImage {
             ctx_mini.drawImage(
                 image,
                 xcrop, ycrop,
-                original_length, original_length,
+                original_width, original_height,
                 0, 0,
                 mini_length, mini_length
             );
