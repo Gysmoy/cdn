@@ -5,7 +5,6 @@
 
 - Carlos Manuel Gamboa Palomino [@gysmoy](https://www.github.com/gysmoy)
 - Yon Gerli Infante Arce [@gerli-arce](https://www.github.com/gerli-arce)
-- Ruth Najhely Gutierrez Castro [@najhgutcast](https://www.github.com/najhgutcast)
 
 
 ## ¿Qué puedo encontrar aquí?
