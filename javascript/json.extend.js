@@ -35,20 +35,19 @@ JSON.pretty = function (obj, tab = 2, {
  * @param {string} [prefix=''] - El prefijo que se usará al concatenar las claves.
  * @returns {Object} - Un nuevo objeto con las claves concatenadas.
  */
-JSON.flatten = function (obj, notation = '.', prefix = '') {
+JSON.flatten = function (obj, notation = '.', prefix = '', flattenLastArray = true) {
     return Object.keys(obj).reduce((acc, k) => {
         const pre = prefix.length ? prefix + notation : '';
         if (Array.isArray(obj[k])) {
-            obj[k].forEach((item, i) => {
-                const key = `${pre}${k}[${i}]`;
-                if (typeof item === 'object' && item !== null) {
-                    Object.assign(acc, JSON.flatten(item, notation, key));
-                } else {
-                    acc[key] = item;
-                }
-            });
+            if (flattenLastArray && typeof obj[k][0] !== 'object') {
+                obj[k].forEach((item, i) => {
+                    acc[`${pre}${k}[${i}]`] = item;
+                });
+            } else {
+                acc[pre + k] = obj[k];
+            }
         } else if (typeof obj[k] === 'object' && obj[k] !== null) {
-            Object.assign(acc, JSON.flatten(obj[k], notation, pre + k));
+            Object.assign(acc, JSON.flatten(obj[k], notation, pre + k, flattenLastArray));
         } else {
             acc[pre + k] = obj[k];
         }
