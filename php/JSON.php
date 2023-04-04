@@ -54,7 +54,7 @@ class JSON
      * @param text - Texto a verificar.
      * @return bool - valor booleano.
      */
-    static public function parseable(string $text): bool
+    static public function parseable(mixed $text): bool
     {
         json_decode($text);
         return (json_last_error() == JSON_ERROR_NONE);
@@ -92,7 +92,7 @@ class JSON
         return $restored;
     }
 
-    static public function fromXML($xml)
+    static public function fromXML(string $xml): array
     {
         $xml = preg_replace('/<([a-z]+):([a-z]+)/i', '<$1_$2', $xml);
         $xml = preg_replace('/<\/([a-z]+):([a-z]+)>/i', '</$1_$2>', $xml);
