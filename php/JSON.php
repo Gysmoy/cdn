@@ -91,4 +91,15 @@ class JSON
         }
         return $restored;
     }
+
+    static public function fromXML($xml)
+    {
+        $xml = preg_replace('/<([a-z]+):([a-z]+)/i', '<$1_$2', $xml);
+        $xml = preg_replace('/<\/([a-z]+):([a-z]+)>/i', '</$1_$2>', $xml);
+
+        $xml_object = simplexml_load_string($xml);
+        $json_array = json_decode(json_encode($xml_object), true, JSON_THROW_ON_ERROR);
+
+        return $json_array;
+    }
 }
