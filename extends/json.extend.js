@@ -1,4 +1,19 @@
 /**
+ * Definición de un nuevo método `parseable` en el objeto `JSON` que toma una cadena
+ * como entrada e intenta analizarla como JSON usando `JSON.parse()`. Si el análisis
+ * es exitoso, devuelve "verdadero", de lo contrario, devuelve "falso". Este método
+ * se puede usar para verificar si una cadena determinada es JSON válida o no.
+ */
+JSON.parseable = function (text) {
+    try {
+        JSON.parse(text);
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+
+/**
  * Una función que imprime de forma legible la representación JSON de un objeto con
  * opciones adicionales de formato.
  *
