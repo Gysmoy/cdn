@@ -7,38 +7,24 @@
 
 class Clipboard {
     /**
-     * Copia el texto del elemento con el atributo g-copy al portapapeles
-     * @param pseudo - El elemento del que desea copiar el texto.
-     * @param [callback] - La función que se llamará cuando la copia sea exitosa.
-     * @param [fallback] - Una función que se llamará si el comando de copia falla.
+     * Copia el contenido del atributo 'g-copy' de un elemento a la portapapeles
+     *
+     * @param {string | EventTarget | NodeElement} pseudo El selector CSS o el
+     * elemento del cual se copiará el contenido.
+     * @param {function(string)} callback Función que se llamará si la copia
+     * fue exitosa, se le pasará el texto copiado como argumento.
+     * @param {function(Error)} fallback Función que se llamará si la copia falló,
+     * se le pasará el error como argumento.
      */
     static copy(pseudo, callback = () => { }, fallback = () => { }) {
-        const element = typeof pseudo === 'string' ? document.querySelector(pseudo) : pseudo;
+        const element = typeof pseudo === 'string' ? document.querySelector(pseudo) : pseudo.target ?? pseudo;
         const g_copy = element.getAttribute('g-copy');
-        const span = document.createElement('span');
-        span.innerText = g_copy;
-        span.style.opacity = '0';
-        span.style.position = 'absolute';
-        span.style.top = '-9999px';
-        document.body.appendChild(span);
-        const selection = window.getSelection();
-        const range = document.createRange();
-        range.selectNode(span);
-        selection.removeAllRanges();
-        selection.addRange(range);
-        let res = false;
-        try {
-            res = document.execCommand('copy');
-        } catch (e) {
-            console.error('Error al copiar al portapapeles');
-        }
-        selection.removeAllRanges();
-        document.body.removeChild(span);
-        if (res) {
-            callback();
-        } else {
-            fallback();
-        }
+
+        navigator.clipboard.writeText(g_copy)
+            .then(() => {
+                callback(g_copy);
+            })
+            .catch(fallback);
     }
 
     /**
