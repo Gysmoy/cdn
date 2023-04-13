@@ -1,5 +1,5 @@
 /**
- * La clase gCookie proporciona métodos para configurar, obtener, eliminar y
+ * La clase Cookies proporciona métodos para configurar, obtener, eliminar y
  * destruir cookies en un navegador web.
  * 
  * @Author SoDe World.
@@ -14,7 +14,7 @@ class Cookies {
      * @param [days = 7] - El número de días hasta que caduque la cookie. Si
      * no se especifica, el valor predeterminado es 7 días.
      */
-    static set(name, value, days = 7) {
+    static set(name, value, days = false) {
         let expires = '';
         if (days) {
             const date = new Date();
@@ -66,16 +66,16 @@ class Cookies {
      * nombre de la cookie que debe eliminarse.
      */
     static delete(name) {
-        gCookie.set(name, '', -1);
+        Cookies.set(name, '', -1);
     }
 
     /**
      * Esta función elimina todas las cookies almacenadas en el navegador.
      */
     static destroy() {
-        const cookies = gCookie.getAll();
+        const cookies = Cookies.getAll();
         for (const name in cookies) {
-            gCookie.delete(name);
+            Cookies.delete(name);
         }
     }
 }
