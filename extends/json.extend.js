@@ -6,8 +6,8 @@
  */
 JSON.parseable = function (text) {
     try {
-        JSON.parse(text);
-        return true;
+        let json = JSON.parse(text);
+        return json;
     } catch (error) {
         return false;
     }
