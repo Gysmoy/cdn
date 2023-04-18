@@ -129,3 +129,23 @@ JSON.unflatten = function (obj, notation = '.') {
 JSON.take = function (obj, quantity) {
     return obj.slice(0, quantity);
 }
+
+/**
+ * Convierte una cadena de texto que contiene un objeto JSON en un objeto JavaScript.
+ *
+ * @param {string} text - La cadena de texto que contiene el objeto JSON.
+ * @returns {Object|Array|null} - El objeto JavaScript obtenido del objeto JSON o null si no se pudo parsear.
+ */
+JSON.getJSON = function (text) {
+    const regex = /[\[{].*[\]}]/;
+    const match = text.match(regex);
+    if (match === null) {
+        return null;
+    }
+    try {
+        const json = JSON.parse(match[0]);
+        return json;
+    } catch (error) {
+        return null;
+    }
+}
