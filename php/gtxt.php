@@ -28,11 +28,12 @@ class gtxt
      */
     static public function cleanLineBreak(string $text): string
     {
+        $text = str_replace(' ', ' ', $text);
         $text = trim($text, '\\n');
         $text = trim($text, '\n');
         $text = trim($text, gtxt::$lineBreak);
         $text = trim($text);
-        $text = preg_match('/^\s+|\s+$/m', '', $text);
+        $text = preg_replace('/^\s+|\s+$/m', '', $text);
         return $text;
     }
 
@@ -72,3 +73,5 @@ class gtxt
         }
     }
 }
+
+echo gtxt::cleanLineBreak(" ¡Perfecto!");
