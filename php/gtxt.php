@@ -1,7 +1,11 @@
 <?php
 
+namespace App\gLibraries;
+
 class gtxt
 {
+    static private string $lineBreak = '
+';
     /**
      * Verifica si un String comienza con un caracter en especifico.
      *
@@ -16,18 +20,19 @@ class gtxt
     }
 
     /**
-     * Función para limpiar retornos de línea de una cadena 
+     * Esta función limpia los retornos de línea en una cadena dada.
      *
-     * @param string $text Cadena que será limpiada
-     *
-     * @return string Cadena limpia
+     * @param string $text La cadena que será limpiada.
+     * 
+     * @return string Una cadena limpia de retornos de línea.
      */
     static public function cleanLineBreak(string $text): string
     {
-        $text = trim($text, '
-');
-        $text = trim($text, '\n');
         $text = trim($text, '\\n');
+        $text = trim($text, '\n');
+        $text = trim($text, gtxt::$lineBreak);
+        $text = trim($text);
+        $text = preg_match('/^\s+|\s+$/m', '', $text);
         return $text;
     }
 
@@ -36,10 +41,9 @@ class gtxt
      * 
      * @return string un salto de línea
      */
-    static public function lineBreak(): string
+    static public function lineBreak(?int $repeat = 1): string
     {
-        return '
-';
+        return str_repeat(gtxt::$lineBreak, $repeat);
     }
 
     /**
@@ -53,5 +57,18 @@ class gtxt
     static public function split(string $text, string $separator = ' '): array
     {
         return explode($separator, $text);
+    }
+
+    static public function match(string $text, string $regex = '/{{(.+?)}}/') {
+        try {
+            $matches = [];
+    
+            $found = preg_match($regex, $text, $matches);
+            $clean_text = str_replace($matches[0], '', $text);
+    
+            return [$found, $matches[1], $clean_text];
+        } catch (\Throwable $th) {
+            return [false, '', $text];
+        }
     }
 }
