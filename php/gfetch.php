@@ -14,6 +14,10 @@ class Fetch
         $options['method'] = $options['method'] ?? 'GET';
         $options['body'] = $options['body'] ?? [];
 
+        if (isset($options['headers']['Content-Type']) && $options['headers']['Content-Type'] == 'application/json') {
+            $options['body'] = json_encode($options['body']);
+        }
+
         $this->curl = curl_init();
 
         $headers = [];
@@ -30,7 +34,7 @@ class Fetch
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => $options['method'],
-            CURLOPT_POSTFIELDS => $options['method'] != 'GET' ? json_encode($options['body']) : null,
+            CURLOPT_POSTFIELDS => $options['method'] != 'GET' ? $options['body'] : null,
             CURLOPT_HTTPHEADER => $headers,
         ]);
 
