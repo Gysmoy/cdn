@@ -1,5 +1,7 @@
 <?php
 
+use Exception;
+
 class Fetch
 {
     private $curl;
@@ -25,7 +27,7 @@ class Fetch
             $headers[] = "$key: $value";
         }
 
-        curl_setopt_array($this->curl, [
+        $opt_array = [
             CURLOPT_URL => $url,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
@@ -36,7 +38,13 @@ class Fetch
             CURLOPT_CUSTOMREQUEST => $options['method'],
             CURLOPT_POSTFIELDS => $options['method'] != 'GET' ? $options['body'] : null,
             CURLOPT_HTTPHEADER => $headers,
-        ]);
+        ];
+
+        if (isset($options['headers']['Content-Type']) && $options['headers']['Content-Type'] == 'multipart/form-data') {
+            $opt_array[CURLOPT_POST] = 1;
+        }
+
+        curl_setopt_array($this->curl, $opt_array);
 
         $this->response = curl_exec($this->curl);
         $this->status = (string) curl_getinfo($this->curl, CURLINFO_RESPONSE_CODE);
