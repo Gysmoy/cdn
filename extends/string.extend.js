@@ -234,8 +234,11 @@ String.prototype.keep = function (characters) {
  * dos cadenas.
  */
 String.prototype.compare = function (compareWith, chars = 3) {
-    let text1 = this.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    let text2 = compareWith.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    // let text1 = this.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    // let text2 = compareWith.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+    let text1 = this.clean();
+    let text2 = compareWith.clean();
 
     let words1 = text1.split(/\W+/);
     let words2 = text2.split(/\W+/);
