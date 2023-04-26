@@ -137,7 +137,7 @@ JSON.take = function (obj, quantity) {
  * @returns {Object|Array|null} - El objeto JavaScript obtenido del objeto JSON o null si no se pudo parsear.
  */
 JSON.getJSON = function (text) {
-    const regex = /[\[{].*[\]}]/;
+    const regex = /[\[{].*[\]}]/s;
     const match = text.match(regex);
     if (match === null) {
         return null;
