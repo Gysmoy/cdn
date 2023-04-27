@@ -137,15 +137,35 @@ JSON.take = function (obj, quantity) {
  * @returns {Object|Array|null} - El objeto JavaScript obtenido del objeto JSON o null si no se pudo parsear.
  */
 JSON.getJSON = function (text) {
-    const regex = /{\s*"[^"]*"\s*:\s*(?:"[^"]*"|\d+|true|false|null|\[.*?\]|\{.*?\})(?:\s*,\s*(?:"[^"]*"\s*:\s*(?:"[^"]*"|\d+|true|false|null|\[.*?\]|\{.*?\}))*)\s*}/s;
-    const match = text.match(regex);
-    if (match === null) {
-        return null;
+    let startIndex = -1;
+    let braceCount = 0;
+    let bracketCount = 0;
+
+    for (let i = 0; i < text.length; i++) {
+        if (text[i] === '{') {
+            if (startIndex === -1) {
+                startIndex = i;
+            }
+            braceCount++;
+        } else if (text[i] === '}') {
+            braceCount--;
+        } else if (text[i] === '[') {
+            if (startIndex === -1) {
+                startIndex = i;
+            }
+            bracketCount++;
+        } else if (text[i] === ']') {
+            bracketCount--;
+        }
+
+        if (braceCount === 0 && bracketCount === 0 && startIndex !== -1) {
+            const json = text.substring(startIndex, i + 1);
+            try {
+                return JSON.parse(json);
+            } catch (error) {
+                return null;
+            }
+        }
     }
-    try {
-        const json = JSON.parse(match[0]);
-        return json;
-    } catch (error) {
-        return null;
-    }
-}
+    return null;
+};
