@@ -225,6 +225,19 @@ String.prototype.keep = function (characters) {
 };
 
 /**
+ * La función `String.prototype.reduce` es un método personalizado agregado al prototipo
+ * `String` en JavaScript. Toma un solo parámetro `chars`, que es el número máximo de caracteres
+ * a los que debe reducirse la cadena.
+*/
+String.prototype.reduce = function (chars) {
+    let text = this.toString();
+    if (text.length > chars) {
+        text = text.slice(0, chars - 3) + "...";
+    }
+    return text;
+}
+
+/**
  * Calcula la similitud entre dos cadenas de texto comparando sus palabras.
  * 
  * @param {string} compareWith - La cadena con la que comparar.
