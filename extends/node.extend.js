@@ -5,9 +5,10 @@
  */
 Node.prototype.text = function (text = undefined) {
     if (text === undefined) {
-        return this.textContent();
+        return this.textContent;
     } else {
-        this.innerText = text;
+        this.textContent = text;
+        return this;
     }
 }
 
@@ -29,7 +30,7 @@ Node.prototype.trigger = function (event) {
     this.dispatchEvent(e);
 }
 
-Node.prototype.listen = function (event, callback = () => {}) {
+Node.prototype.listen = function (event, callback = () => { }) {
     this.addEventListener(event, callback);
 }
 /**
@@ -58,7 +59,7 @@ Node.prototype.prop = function (key, value = undefined) {
             valueType: type
         };
         this['node-types'] = JSON.stringify(nodeTypes);
-        return;
+        return this;
     } else {
         switch (nodeTypes[key]?.valueType) {
             case 'number':
@@ -108,7 +109,7 @@ Node.prototype.attr = function (key, value = undefined) {
             valueType: type
         };
         this['node-types'] = JSON.stringify(nodeTypes);
-        return;
+        return this;
     } else {
         switch (nodeTypes[key]?.valueType) {
             case 'number':
@@ -146,6 +147,55 @@ Node.prototype.toggle = function (delay = 0) {
     }
 }
 
+HTMLElement.prototype.empty = function () {
+    this.innerHTML = null;
+}
+
+HTMLSelectElement.prototype.setOptions = function (options = []) {
+    this.empty();
+    options.forEach(option => {
+        this.append(option);
+    });
+}
+
+HTMLFormElement.prototype.getData = function () {
+    let obj = {};
+    [...this.elements].forEach(e => {
+        if (e.name) {
+            if (e.tagName === "INPUT") {
+                if (e.type === "number") {
+                    obj[e.name] = e.value !== "" ? Number(e.value) : null;
+                } else if (e.type === "checkbox") {
+                    obj[e.name] = e.checked;
+                } else if (e.type === "radio") {
+                    if (e.checked) {
+                        obj[e.name] = e.value;
+                    } else if (!obj.hasOwnProperty(e.name)) {
+                        obj[e.name] = null;
+                    }
+                } else {
+                    obj[e.name] = e.value !== "" ? e.value : null;
+                }
+            } else if (e.tagName === "SELECT") {
+                if (e.multiple) {
+                    var opcionesSeleccionadas = [];
+                    for (var j = 0; j < e.options.length; j++) {
+                        if (e.options[j].selected) {
+                            opcionesSeleccionadas.push(e.options[j].value);
+                        }
+                    }
+                    obj[e.name] = opcionesSeleccionadas;
+                } else {
+                    obj[e.name] = e.value !== "" ? e.value : null;
+                }
+            } else if (e.tagName === "TEXTAREA") {
+                obj[e.name] = e.value !== "" ? e.value : null;
+            }
+        }
+    });
+    return obj;
+};
+
 /**
  * Clase HTML para simplificar el manejo de elementos HTML
  */
@@ -173,8 +223,12 @@ class HTML {
      * @param {string} elementName - Nombre del elemento HTML a crear
      * @returns {HTMLElement} - Nuevo elemento HTML creado
      */
-    static create = (elementName) => {
+    static create = (elementName, attrs = {}) => {
         let element = document.createElement(elementName);
+        for (const attr in attrs) {
+            let value = attrs[attr];
+            element.attr(attr, value);
+        }
         return element;
     }
 }

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ejemplo de Formulario</title>
+</head>
+<body>
+  <form id="miFormulario">
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" name="nombre"><br><br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email"><br><br>
+
+    <label for="edad">Edad:</label>
+    <input type="number" id="edad" name="edad" step="0.1"><br><br>
+
+    <label for="suscripcion">Suscripción:</label>
+    <input type="checkbox" id="suscripcion" name="suscripcion"><br><br>
+
+    <label for="genero">Género:</label>
+    <input type="radio" id="genero-masculino" name="genero" value="masculino">Masculino
+    <input type="radio" id="genero-femenino" name="genero" value="femenino">Femenino<br><br>
+
+    <label for="color-favorito">Color favorito:</label>
+    <select id="color-favorito" name="color-favorito">
+      <option value="rojo">Rojo</option>
+      <option value="azul">Azul</option>
+      <option value="verde">Verde</option>
+    </select><br><br>
+
+
+    <select id="platos-favoritos" name="platos-favoritos" multiple>
+        <option value="cv">Ceviche</option>
+        <option value="ap">Arroz con pollo</option>
+        <option value="pb">Pollo a la brasa</option>
+      </select><br><br>
+
+    <label for="comentarios">Comentarios:</label>
+    <textarea id="comentarios" name="comentarios"></textarea><br><br>
+
+    <input type="submit" value="Enviar">
+  </form>
+  <script src="extends/node.extend.js"></script>
+  <script>
+    miFormulario.onsubmit = (e) => {
+        e.preventDefault();
+        let data = miFormulario.getData()
+        console.log(data);
+    }
+  </script>
+</body>
+</html>
