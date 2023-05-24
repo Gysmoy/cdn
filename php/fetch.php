@@ -1,6 +1,6 @@
 <?php
 
-use Exception;
+// use Exception;
 
 class Fetch
 {

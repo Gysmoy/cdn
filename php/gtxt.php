@@ -60,6 +60,16 @@ class gtxt
         return explode($separator, $text);
     }
 
+    static public function keep(string $string, string $characters): string
+    {
+        $regex = '/[^' . preg_quote($characters, '/') . ']/';
+        $filteredString = preg_replace($regex, '', $string);
+        $wordsArray = preg_split('/\s+/', $filteredString);
+        $filteredArray = array_filter($wordsArray, 'strlen');
+        $result = implode(' ', $filteredArray);
+        return $result;
+    }
+
     static public function match(string $text, string $regex = '/{{(.+?)}}/') {
         try {
             $matches = [];
