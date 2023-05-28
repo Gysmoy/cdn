@@ -70,18 +70,26 @@ class gtxt
         return $result;
     }
 
-    static public function match(string $text, string $regex = '/{{(.+?)}}/') {
+    static public function match(string $text, string $regex = '/{{(.+?)}}/')
+    {
         try {
             $matches = [];
-    
+
             $found = preg_match($regex, $text, $matches);
             $clean_text = str_replace($matches[0], '', $text);
-    
+
             return [$found, $matches[1], $clean_text];
         } catch (\Throwable $th) {
             return [false, '', $text];
         }
     }
-}
 
-echo gtxt::cleanLineBreak(" ¡Perfecto!");
+    static public function reduce(string $string, int $chars)
+    {
+        $text = strval($string);
+        if (strlen($text) > $chars) {
+            $text = substr($text, 0, $chars - 3) . "...";
+        }
+        return $text;
+    }
+}
