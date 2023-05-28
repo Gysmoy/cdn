@@ -62,7 +62,7 @@ class JSON
      */
     public static function parseable(mixed $text): array|false
     {
-        $json = json_decode($text);
+        $json = json_decode($text, true);
         return (json_last_error() == JSON_ERROR_NONE ? $json : false);
     }
 
