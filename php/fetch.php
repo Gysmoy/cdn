@@ -76,13 +76,3 @@ class Fetch
         curl_close($this->curl);
     }
 }
-
-
-$res = new Fetch('https://tikcd.com/en/video/info', [
-    "method" => "POST",
-    "body" => [
-        "url" => "https://www.tiktok.com/@jessipereirag/video/7237130642352262406?is_from_webapp=1&sender_device=pc"
-    ]
-]);
-
-echo $res->text();
