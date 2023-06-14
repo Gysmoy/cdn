@@ -1,6 +1,6 @@
 <?php
 
-namespace App\gLibraries;
+namespace SoDe\Extend;
 
 class Tokenizer
 {

@@ -1,6 +1,7 @@
 <?php
 
-// use Exception;
+namespace SoDe\Extend;
+use Exception;
 
 class Fetch
 {
