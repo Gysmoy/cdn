@@ -8,12 +8,12 @@ Math.avg = function () {
     return sum / args.length;
 };
 
-Math.highs = function (numbers, quantity) {
+Math.highs = function (numbers, quantity = 1) {
     var sortedNumbers = numbers.sort((a, b) => b - a);
     return sortedNumbers.slice(0, quantity);
 };
 
-Math.lows = function (numbers, quantity) {
+Math.lows = function (numbers, quantity = 1) {
     var sortedNumbers = numbers.sort((a, b) => a - b);
     return sortedNumbers.slice(0, quantity);
 };
