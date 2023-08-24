@@ -128,7 +128,6 @@ class Local {
         let valuedecoded;
         try {
             valuedecoded = Bcrypt4Storage.decrypt(valueencoded);
-            console.log('Si lo desencriptó sin errores');
         } catch (e) { }
         const value = JSON.parse(valuedecoded);
         const type = this.storage_types[name];
