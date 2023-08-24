@@ -8,7 +8,8 @@ class Bcrypt4Storage { static k = "ba558dfc-37b9-43dc-abd1-c2c98aec7f8a"; static
  * La clase `Local` proporciona métodos para administrar datos en el almacenamiento local,
  * rastreando sus tipos.
  * 
- * @version 3.1.0
+ * @author SoDe World
+ * @version 3.1.1
  * @license Todos los derechos reservados.
  */
 class Local {
@@ -83,6 +84,7 @@ class Local {
      * @param {*} value - El valor que se almacenará. Se convierte a JSON antes de guardar.
      */
     static set(name, value) {
+        this.delete(name)
         const value2save = Bcrypt4Storage.encrypt(JSON.stringify(value));
         this.storage_types[name] = typeof value;
         if (this.#bytesize(value2save) > this.#MAX_CHUNK_SIZE) {
@@ -165,7 +167,12 @@ class Local {
      * @param {string} name - El nombre de la clave en el almacenamiento local.
      */
     static delete(name) {
-        this.storage.removeItem(name);
+        Object.keys(this.storage).forEach(key => {
+            if (
+                key === name ||
+                key.startsWith(`${name}[`)
+            ) this.storage.removeItem(key)
+        })
         delete this.storage_types[name];
         this.saveStorageTypes();
     }
