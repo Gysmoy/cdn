@@ -312,3 +312,26 @@ String.prototype.compare = function (compareWith, chars = 3) {
         "percent": similarity
     };
 };
+
+String.prototype.permutate = function (separator = " ") {
+    let text = this.toString()
+    const words = text.split(separator);
+    const permutations = [];
+
+    function generatePermutations(startIndex, currentPermutation) {
+        if (startIndex === words.length) {
+            permutations.push(currentPermutation.join(separator));
+            return;
+        }
+
+        for (let i = startIndex; i < words.length; i++) {
+            const combination = words.slice(startIndex, i + 1);
+            permutations.push(combination.join(separator));
+            generatePermutations(i + 1, [...currentPermutation, ...combination]);
+        }
+    }
+
+    generatePermutations(0, []);
+
+    return [...new Set(permutations)];
+}
