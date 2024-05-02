@@ -130,7 +130,7 @@ class Notify {
 
     static add({
         title = 'Notify está listo',
-        icon = 'https://sode.me/assets/logos/sode.svg',
+        icon = 'https://sode.me/img/icons/sode.icon.svg',
         body = 'Propiedad de SoDe World',
         type = 'success',
         timeout = 8000,

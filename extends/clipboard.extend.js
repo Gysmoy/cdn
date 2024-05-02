@@ -1,41 +1,10 @@
-/**
- * La clase Clipboard sirve para interacciones con el portapapeles
- * 
- * @Author SoDe World.
- * @Copyright Todos los derechos reservados.
- */
-
 class Clipboard {
-    /**
-     * Copia el contenido del atributo 'g-copy' de un elemento a la portapapeles
-     *
-     * @param {string | EventTarget | NodeElement} pseudo El selector CSS o el
-     * elemento del cual se copiará el contenido.
-     * @param {function(string)} callback Función que se llamará si la copia
-     * fue exitosa, se le pasará el texto copiado como argumento.
-     * @param {function(Error)} fallback Función que se llamará si la copia falló,
-     * se le pasará el error como argumento.
-     */
-    static copy(pseudo, callback = () => { }, fallback = () => { }) {
-        const element = typeof pseudo === 'string' ? document.querySelector(pseudo) : pseudo.target ?? pseudo;
-        const g_copy = element.getAttribute('g-copy');
-
-        navigator.clipboard.writeText(g_copy)
-            .then(() => {
-                callback(g_copy);
-            })
-            .catch(fallback);
+    static copy = (string, callback = () => { }, fallback = () => { }) => {
+        navigator.clipboard.writeText(string)
+            .then(callback)
+            .catch(fallback)
     }
 
-    /**
-     * Le permite pegar archivos en un elemento de entrada
-     * @param pseudo - El elemento que desea pegar.
-     * @param [callback] - La función que se llamará cuando se suelte o pegue
-     * un archivo.
-     * @param [attrs] - Los atributos que se agregarán al elemento cuando el 
-     * usuario arrastre un archivo sobre el elemento.
-     * @returns Nothing.
-     */
     static paste(pseudo, callback = () => { }, attrs = {}) {
         const element = typeof pseudo === "string" ? document.querySelector(pseudo) : pseudo;
 
@@ -116,4 +85,4 @@ class Clipboard {
         element.addEventListener("dragover", handleDragOver);
         element.addEventListener("dragleave", handleDragLeave);
     }
-}  
+}

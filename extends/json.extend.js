@@ -1,9 +1,3 @@
-/**
- * Definición de un nuevo método `parseable` en el objeto `JSON` que toma una cadena
- * como entrada e intenta analizarla como JSON usando `JSON.parse()`. Si el análisis
- * es exitoso, devuelve "verdadero", de lo contrario, devuelve "falso". Este método
- * se puede usar para verificar si una cadena determinada es JSON válida o no.
- */
 JSON.parseable = function (text) {
     try {
         let json = JSON.parse(text);
@@ -11,87 +5,39 @@ JSON.parseable = function (text) {
     } catch (error) {
         return false;
     }
-}
-
-/**
- * Una función que imprime de forma legible la representación JSON de un objeto con
- * opciones adicionales de formato.
- *
- * @param {number} [tab = 2] - El número de espacios para indentar la salida.
- * @param {Object} [options] - Opciones adicionales para el formato de la salida.
- * @param {boolean} [options.keyNative = false] - Indica si las comillas dobles alrededor
- * de las claves de objeto deben eliminarse.
- * @param {boolean} [options.valueNative = false] - Indica si las comillas dobles alrededor
- * de los valores de cadena deben eliminarse.
- * @param {string} [options.asigner = ':'] - El separador a utilizar entre las claves y
- * los valores del objeto.
- * @param {string} [options.separator = ','] - El separador a utilizar entre cada par
- * clave-valor del objeto.
- * @returns {string} - Una cadena que contiene la representación JSON del objeto formateado
- * de manera legible.
- */
-JSON.pretty = function (obj, tab = 2, {
-    keyNative = false,
-    valueNative = false,
-    asigner = ':',
-    separator = ','
-} = { asigner: ':', separator: ',' }) {
-    let str = JSON.stringify(obj, null, tab);
-    if (keyNative) str = str.replace(/"([^"]+)":/g, '$1:');
-    if (valueNative) str = str.replace(/: "([^"]+)"/g, ': $1');
-    str = str.replace(/:/g, asigner);
-    str = str.replace(/,\n/g, `${separator}\n`)
-    return str;
-}
-
-/**
- * Recursivamente aplana un objeto, concatenando las claves con el prefijo dado.
- * 
- * @param {string} [prefix=''] - El prefijo que se usará al concatenar las claves.
- * @returns {Object} - Un nuevo objeto con las claves concatenadas.
- */
-JSON.flatten = function (obj, notation = '.', prefix = '', flattenLastArray = true) {
-    return Object.keys(obj).reduce((acc, k) => {
-        const pre = prefix.length ? prefix + notation : '';
-        if (Array.isArray(obj[k])) {
-            if (flattenLastArray && typeof obj[k][0] !== 'object') {
-                obj[k].forEach((item, i) => {
-                    acc[`${pre}${k}[${i}]`] = item;
-                });
-            } else {
-                acc[pre + k] = obj[k];
-            }
-        } else if (typeof obj[k] === 'object' && obj[k] !== null) {
-            Object.assign(acc, JSON.flatten(obj[k], notation, pre + k, flattenLastArray));
-        } else {
-            acc[pre + k] = obj[k];
-        }
-        return acc;
-    }, {});
 };
 
-/**
- * Convierte un objeto de notación de puntos a un objeto anidado.
- * 
- * @param {Object} obj - El objeto a convertir.
- * @returns {Object} - El objeto convertido.
- */
+JSON.flatten = function (array, notation = '.', prefix = '') {
+    let flattened = {};
+    for (let key in array) {
+        let new_key = Number.isInteger(Number(key)) ? '[' + key + ']' : (prefix === '' ? key : notation + key);
+        if (Array.isArray(array[key]) || typeof array[key] === 'object') {
+            let temp = JSON.flatten(array[key], notation, prefix + new_key);
+            for (let temp_key in temp) {
+                flattened[temp_key] = temp[temp_key];
+            }
+        } else {
+            flattened[prefix + new_key] = array[key];
+        }
+    }
+    return flattened;
+}
+
 JSON.unflatten = function (obj, notation = '.') {
     let result = {};
     for (let key in obj) {
         let keys = key.split(notation);
+        keys = keys.map(k => k.replace(/\\./g, '.').replace(/\\\[/g, '[').replace(/\\\]/g, ']'));
         let cur = result;
         for (let i = 0; i < keys.length; i++) {
             let prop = keys[i];
-            let isArray = false;
             if (prop.includes('[') && prop.endsWith(']')) {
                 let index = parseInt(prop.slice(prop.indexOf('[') + 1, prop.length - 1));
                 prop = prop.slice(0, prop.indexOf('['));
                 if (!cur[prop]) {
                     cur[prop] = [];
                 }
-                isArray = true;
-                while (cur[prop].length < index) {
+                while (cur[prop].length <= index) {
                     cur[prop].push({});
                 }
                 if (i === keys.length - 1) {
@@ -117,55 +63,44 @@ JSON.unflatten = function (obj, notation = '.') {
     return result;
 }
 
-/**
- * Toma una cantidad especificada de elementos desde el principio del array actual y
- * devuelve un nuevo array con esos elementos.
- *
- * @param {number} quantity - La cantidad de elementos que se tomarán del array actual.
- * Si se proporciona un valor negativo, se tomará ningún elemento.
- * @returns {Array} Un nuevo array que contiene los elementos tomados desde el array
- * actual.
- */
 JSON.take = function (obj, quantity) {
     return obj.slice(0, quantity);
 }
 
-/**
- * Convierte una cadena de texto que contiene un objeto JSON en un objeto JavaScript.
- *
- * @param {string} text - La cadena de texto que contiene el objeto JSON.
- * @returns {Object|Array|null} - El objeto JavaScript obtenido del objeto JSON o null si no se pudo parsear.
- */
-JSON.getJSON = function (text) {
-    let startIndex = -1;
-    let braceCount = 0;
-    let bracketCount = 0;
+JSON.fromCSV = function (csv, separator = ',', isNested = false) {
+    const lineas = String(csv).trim().split('\n');
+    const resultado = [];
+    let regex = new RegExp('[^a-zA-Z0-9ÑñÁáÉéÍíÓóÚúÜü\\s]', 'g');
+    const encabezados = lineas[0].split(separator).map(item => {
+        return isNested
+            ? item.split('.').map(x => x.trim()).filter(Boolean).join('.')
+            : item.replace(regex, '')
+                .split(' ')
+                .filter(Boolean)
+                .join(' ').trim()
+    });
 
-    for (let i = 0; i < text.length; i++) {
-        if (text[i] === '{') {
-            if (startIndex === -1) {
-                startIndex = i;
-            }
-            braceCount++;
-        } else if (text[i] === '}') {
-            braceCount--;
-        } else if (text[i] === '[') {
-            if (startIndex === -1) {
-                startIndex = i;
-            }
-            bracketCount++;
-        } else if (text[i] === ']') {
-            bracketCount--;
-        }
+    const regexp = new RegExp(`${separator}(?=(?:(?:[^"]*"){2})*[^"]*$)`)
 
-        if (braceCount === 0 && bracketCount === 0 && startIndex !== -1) {
-            const json = text.substring(startIndex, i + 1);
-            try {
-                return JSON.parse(json);
-            } catch (error) {
-                return null;
+    for (let i = 1; i < lineas.length; i++) {
+        const obj = {};
+        const filaActual = lineas[i].split(regexp)
+            .map(item => item.trim().replace(/^"(.*)"$/, '$1'));
+
+        if (filaActual.some(dato => dato !== '')) {
+            for (let j = 0; j < encabezados.length; j++) {
+                obj[encabezados[j]] = filaActual[j];
             }
+            resultado.push(obj);
         }
     }
-    return null;
-};
+    return resultado;
+}
+
+JSON.isNested = function (object) {
+    for (const key in object) {
+        const value = object[key];
+        if (value != null && typeof value == 'object') return true
+    }
+    return false
+}
